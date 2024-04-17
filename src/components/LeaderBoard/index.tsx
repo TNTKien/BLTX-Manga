@@ -5,7 +5,7 @@ import Likes from './Likes';
 const Manga = () => {
     return (
         <Tabs defaultValue="view">
-            <TabsList className="grid grid-cols-2 gap-2 bg-primary-foreground">
+            <TabsList className="grid grid-cols-2 gap-2 bg-primary-foreground" >
                 <TabsTrigger value="view">Lượt xem</TabsTrigger>
                 <TabsTrigger value="like">Lượt thích</TabsTrigger>
             </TabsList>

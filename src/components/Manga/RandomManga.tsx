@@ -1,6 +1,5 @@
 import CarouselManga from "./components/CarouselManga";
 import { db } from "@/lib/db";
-import prismaRandom from 'prisma-extension-random';
 import { Manga } from "@prisma/client";
 
 
@@ -8,25 +7,10 @@ import { Manga } from "@prisma/client";
 const RandomManga = async () => {
     const mangas = shuffleMangas(await pickRandomMangas(10));
 
-    const jsonLd = {
-        '@context': 'https://schema.org',
-        '@type': 'ItemList',
-        itemListElement: mangas.map((manga, idx) => ({
-            '@type': 'ListItem',
-            position: idx,
-        })),
-    };
-
     return (
-        <>
-            <script
-                type="application/ld+json"
-                dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-            />
-            <div className="min-w-0 h-fit">
-                <CarouselManga mangas={mangas} />
-            </div>
-        </>
+        <div className="min-w-0 h-fit">
+            <CarouselManga mangas={mangas} />
+        </div>
     )
 };
 

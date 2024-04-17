@@ -1,15 +1,9 @@
-import axiosInstance from "@/lib/axios";
-import { Manga } from "@prisma/client";
 import MangaCardSkeleton from "@/components/Skeleton/MangaCardSkeleton";
 import LeaderboardSkeletion from "@/components/Skeleton/LeaderboardSkeletion";
 import { MoveRight } from 'lucide-react';
 import Link from 'next/link';
 import dynamic from 'next/dynamic';
 
-async function getMangas() {
-  const { data } = await axiosInstance.get("/api/manga");
-  return data.data as Manga[];
-}
 const RandomManga = dynamic(() => import('@/components/Manga/RandomManga'), {
 });
 
@@ -24,7 +18,6 @@ const Leaderboard = dynamic(() => import('@/components/LeaderBoard'), {
 export default async function Home() {
   return (
     <main className="pb-4 space-y-12 md:space-y-16">
-
       <section className="min-w-0 h-fit md:ml-6 p-3 space-y-3 rounded-lg bg-gradient-to-b from-background/40">
         <h1 className="text-2xl font-semibold">Truyện ngẫu nhiên</h1>
         <RandomManga />

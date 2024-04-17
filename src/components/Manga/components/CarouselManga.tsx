@@ -11,7 +11,6 @@ import { type EmblaCarouselType as CarouselApi } from 'embla-carousel';
 import Link from 'next/link';
 import { FC, useCallback, useEffect, useRef, useState } from 'react';
 import MangaImage from './MangaImage';
-import { cn } from '@/lib/utils';
 
 interface CarouselMangaProps {
     mangas: Pick<Manga, 'id' | 'title' | 'description' | 'cover'>[];
@@ -45,13 +44,16 @@ const CarouselManga: FC<CarouselMangaProps> = ({ mangas }) => {
             align={"start"}
             slideGap="md"
             inViewThreshold={0.9}
-            slideSize={"15%"}
+            slideSize={{
+                base: '35%',
+                sm: '15%',
+            }}
             slidesToScroll={1}
         >
             {/* {!isMobile ? () : () } */}
 
 
-            {mangas.map((manga, idx) => (
+            {mangas.map((manga) => (
                 <Carousel.Slide key={manga.id}>
                     <Link
                         href={`/`}
