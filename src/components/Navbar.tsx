@@ -10,8 +10,11 @@ export default function NavbarComponent() {
     }>
       <NavbarContent justify="start">
         <NavbarBrand className="mr-4">
-          <BookA />
-          <p className="hidden sm:block font-bold text-inherit">BLTX</p>
+          <Link href="/" color="foreground">
+            <BookA />
+            <p className="hidden sm:block font-bold text-inherit">BLTX</p>
+          </Link>
+
         </NavbarBrand>
       </NavbarContent>
 
