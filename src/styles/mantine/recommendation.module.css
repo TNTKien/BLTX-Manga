@@ -1,0 +1,31 @@
+.controls {
+  height: 100%;
+  top: 0;
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.control {
+  height: 100%;
+  border-radius: 0;
+  box-shadow: none;
+
+  & svg {
+    width: 50px !important;
+    height: 50px !important;
+  }
+
+  &[data-inactive] {
+    opacity: 0;
+    cursor: default;
+    transform: translateX(-100%);
+  }
+
+  &:first-child {
+    @apply bg-gradient-to-r from-background/70;
+  }
+
+  &:last-child {
+    @apply bg-gradient-to-l from-background/70;
+  }
+}

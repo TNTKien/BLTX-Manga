@@ -1,0 +1,19 @@
+.content > div {
+  @apply space-y-6;
+}
+
+.control {
+  width: 100%;
+  text-decoration: none;
+  display: flex;
+  justify-content: center;
+
+  &[aria-expanded='true'] {
+    margin-top: 0.75rem;
+  }
+
+  & {
+    border-top-width: 1px;
+    border-color: hsl(var(--foreground));
+  }
+}

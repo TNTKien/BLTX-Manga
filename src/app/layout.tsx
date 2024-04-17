@@ -5,7 +5,7 @@ import NavbarComponent from "@/components/Navbar";
 export default function RootLayout({children}: { children: React.ReactNode }) {
   return (
     <html lang="en">
-      <body className="antialiased">
+      <body className="antialiased px-4">
         <Providers>
           <NavbarComponent />
           {children}

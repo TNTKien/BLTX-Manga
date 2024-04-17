@@ -1,13 +1,13 @@
 "use client"
-import {Navbar, NavbarBrand, NavbarContent, NavbarItem, Link, Input, DropdownItem, DropdownTrigger, Dropdown, DropdownMenu, Avatar} from "@nextui-org/react";
+import { Navbar, NavbarBrand, NavbarContent, NavbarItem, Link, Input, DropdownItem, DropdownTrigger, Dropdown, DropdownMenu, Avatar } from "@nextui-org/react";
 import { Search, BookA } from "lucide-react";
 export default function NavbarComponent() {
-    return(
-        <Navbar isBordered className="justify-between" classNames={
-            {
-                wrapper: "max-w-full",
-            }
-        }>
+  return (
+    <Navbar className="justify-between rounded-b-md bg-transparent" classNames={
+      {
+        wrapper: "max-w-full",
+      }
+    }>
       <NavbarContent justify="start">
         <NavbarBrand className="mr-4">
           <BookA />
@@ -34,7 +34,7 @@ export default function NavbarComponent() {
               isBordered
               as="button"
               className="transition-transform"
-            //   color="secondary"
+              //   color="secondary"
               name="IAM NEYK"
               size="sm"
               src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIGNsYXNzPSJsdWNpZGUgbHVjaWRlLXVzZXItcm91bmQiPjxjaXJjbGUgY3g9IjEyIiBjeT0iOCIgcj0iNSIvPjxwYXRoIGQ9Ik0yMCAyMWE4IDggMCAwIDAtMTYgMCIvPjwvc3ZnPg=="
@@ -47,11 +47,11 @@ export default function NavbarComponent() {
             <DropdownItem key="profile">Trang cá nhân</DropdownItem>
             <DropdownItem key="manage">Quản lý truyện</DropdownItem>
             <DropdownItem key="logout" color="danger">
-              Log Out
+              Đăng xuất
             </DropdownItem>
           </DropdownMenu>
         </Dropdown>
       </NavbarContent>
     </Navbar>
-    )
+  )
 }

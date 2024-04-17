@@ -1,15 +1,15 @@
 // app/providers.tsx
 'use client'
+import { MantineProvider } from '@mantine/core';
+import { NextUIProvider } from '@nextui-org/react';
+import { useRouter } from 'next/navigation'
 
-import {NextUIProvider} from '@nextui-org/react';
-import {useRouter} from 'next/navigation'
-
-export function Providers({children}: { children: React.ReactNode }) {
+export function Providers({ children }: { children: React.ReactNode }) {
   const router = useRouter();
 
   return (
     <NextUIProvider navigate={router.push}>
-      {children}
+      <MantineProvider>{children}</MantineProvider>
     </NextUIProvider>
   )
 }
