@@ -22,7 +22,7 @@ const Views = async () => {
             {results.map((manga, idx) => (
                 <Link
                     key={manga.id}
-                    href={`/#`}
+                    href={`/manga/${manga.id}`}
                     className="grid grid-cols-[.3fr_1fr] gap-4 rounded-md group transition-colors hover:bg-background/20"
                 >
                     <div className="relative">

@@ -1,20 +1,31 @@
-"use client"
-import { Navbar, NavbarBrand, NavbarContent, NavbarItem, Link, Input, DropdownItem, DropdownTrigger, Dropdown, DropdownMenu, Avatar } from "@nextui-org/react";
-import { Search, BookA } from "lucide-react";
+"use client";
+import {
+  Navbar,
+  NavbarBrand,
+  NavbarContent,
+  Link,
+  Input,
+  DropdownItem,
+  DropdownTrigger,
+  Dropdown,
+  DropdownMenu,
+  Avatar,
+} from "@nextui-org/react";
+import { Search, BookMarked } from "lucide-react";
 export default function NavbarComponent() {
   return (
-    <Navbar className="justify-between rounded-b-md bg-transparent" classNames={
-      {
+    <Navbar
+      className="justify-between rounded-b-md bg-transparent"
+      classNames={{
         wrapper: "max-w-full",
-      }
-    }>
+      }}
+    >
       <NavbarContent justify="start">
         <NavbarBrand className="mr-4">
           <Link href="/" color="foreground">
-            <BookA />
+            <BookMarked />
             <p className="hidden sm:block font-bold text-inherit">BLTX</p>
           </Link>
-
         </NavbarBrand>
       </NavbarContent>
 
@@ -24,7 +35,8 @@ export default function NavbarComponent() {
             base: "max-w-full sm:max-w-[15rem] h-10 w-full",
             mainWrapper: "h-full",
             input: "text-small",
-            inputWrapper: "h-full font-normal text-default-500 bg-default-400/20 dark:bg-default-500/20",
+            inputWrapper:
+              "h-full font-normal text-default-500 bg-default-400/20 dark:bg-default-500/20",
           }}
           placeholder="Nhập từ khoá..."
           size="sm"
@@ -56,5 +68,5 @@ export default function NavbarComponent() {
         </Dropdown>
       </NavbarContent>
     </Navbar>
-  )
+  );
 }

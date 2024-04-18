@@ -56,7 +56,7 @@ const CarouselManga: FC<CarouselMangaProps> = ({ mangas }) => {
             {mangas.map((manga) => (
                 <Carousel.Slide key={manga.id}>
                     <Link
-                        href={`/`}
+                        href={`/manga/${manga.id}`}
                     >
                         <MangaImage
                             priority

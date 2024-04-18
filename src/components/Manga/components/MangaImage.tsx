@@ -3,9 +3,10 @@ import type { Manga } from '@prisma/client';
 import Image from 'next/image';
 import { FC } from 'react';
 import { baseURL } from '@/utils/config';
+import Link from 'next/link';
 
 interface MangaImageProps extends React.HTMLAttributes<HTMLImageElement> {
-    manga: Pick<Manga, 'cover' | 'title'>;
+    manga: Pick<Manga, 'cover' | 'title' | 'id'>;
     loading?: 'eager' | 'lazy';
     sizes?: string;
     priority?: boolean;
