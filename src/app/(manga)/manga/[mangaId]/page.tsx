@@ -1,6 +1,6 @@
 import MangaImage from "@/components/Manga/components/MangaImage";
 import MangaInfo from "@/components/Manga/components/MangaInfo";
-import ChapterList from "@/components/Chapter";
+import ChapterList from "@/components/Chapter/ChapterList";
 import { TagWrapper } from "@/components/ui/Tag";
 import {
   Accordion,

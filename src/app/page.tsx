@@ -1,19 +1,26 @@
 import MangaCardSkeleton from "@/components/Skeleton/MangaCardSkeleton";
 import LeaderboardSkeletion from "@/components/Skeleton/LeaderboardSkeletion";
-import { MoveRight } from 'lucide-react';
-import Link from 'next/link';
-import dynamic from 'next/dynamic';
+import { MoveRight } from "lucide-react";
+import Link from "next/link";
+import dynamic from "next/dynamic";
+import { Metadata } from "next";
 
-const RandomManga = dynamic(() => import('@/components/Manga/RandomManga'), {
-});
+const RandomManga = dynamic(() => import("@/components/Manga/RandomManga"), {});
 
-const LatestManga = dynamic(() => import('@/components/Manga/LatestManga'), {
+const LatestManga = dynamic(() => import("@/components/Manga/LatestManga"), {
   loading: () => <MangaCardSkeleton />,
 });
 
-const Leaderboard = dynamic(() => import('@/components/LeaderBoard'), {
+const Leaderboard = dynamic(() => import("@/components/LeaderBoard"), {
   loading: () => <LeaderboardSkeletion />,
 });
+
+export const metadata: Metadata = {
+  title: "Bac Le Than Xa",
+  description:
+    "Web đọc truyện tranh online tiện ích nhất được cập nhật liên tục mỗi ngày",
+  keywords: ["Manga", "Truyện tranh", "Bac Le Than Xa", "BLTX"],
+};
 
 export default async function Home() {
   return (

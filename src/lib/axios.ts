@@ -12,7 +12,7 @@ axiosInstance.interceptors.response.use(
     return response;
   },
   async (error) => {
-    //console.log(error);
+    console.log(error);
     const originalConfig = error.config;
     //console.log(error.response.status);
     if (
