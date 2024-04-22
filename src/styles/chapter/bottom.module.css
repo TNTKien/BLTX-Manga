@@ -51,14 +51,14 @@
   height: 100%;
   border-radius: 9999px;
   cursor: pointer;
-  background-color: hsl(var(--primary-foreground));
+  background-color: #e1e0e0;
 }
 
 .mt_bottom_slider_range {
   position: absolute;
   height: 100%;
   border-radius: 9999px;
-  background-color: hsl(var(--primary) / 0.8);
+  background-color: #f67f7f;
 }
 
 .mt_bottom_slider_thumb {

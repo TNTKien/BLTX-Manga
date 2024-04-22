@@ -48,7 +48,7 @@ interface MenuProps {
   title: string;
   prevChapterUrl: string;
   nextChapterUrl: string;
-  chapterList: Pick<Chapter, "id" | "title">[];
+  chapterList: Pick<Chapter, "id" | "title" | "mangaId">[];
 }
 
 const layoutOpts: { icon: React.ReactNode; title: string; type: LayoutType }[] =
@@ -111,8 +111,9 @@ const Menu: FC<MenuProps> = ({
         "absolute top-0 right-0 inset-y-0 w-full md:w-[24rem] z-20 transition-transform duration-300 translate-x-full",
         {
           "translate-x-0": menuToggle,
+          " drop-shadow-2xl": menuToggle,
         },
-        "p-4 bg-primary-foreground overflow-y-auto md:border-l md:border-foreground/50"
+        "p-4 bg-primary-foreground overflow-y-auto"
       )}
     >
       <div className="relative flex justify-center">
@@ -125,24 +126,19 @@ const Menu: FC<MenuProps> = ({
         >
           <ChevronLeft className="w-7 h-7" />
         </button>
-        <Link
-          href="/"
-          aria-label="homepage link button"
-          className="text-3xl font-semibold"
-        >
-          Moetruyen
-        </Link>
+        <p className="text-3xl font-semibold">Menu</p>
       </div>
 
-      <p className="text-xl text-center line-clamp-2 mt-7">{title}</p>
-
       <div className="mt-8 space-y-1.5">
-        <p className="text-xl">Chapter</p>
+        {/* <p className="text-xl">Chapter</p> */}
         <div className="flex items-center gap-3">
           <Link
             href={prevChapterUrl}
             aria-label="previous chapter link button"
-            className={buttonVariants({ variant: "secondary" })}
+            className={cn(
+              buttonVariants({ variant: "destructive" }),
+              "bg-slate-200 hover:bg-slate-300"
+            )}
           >
             <ChevronLeft />
           </Link>
@@ -151,9 +147,9 @@ const Menu: FC<MenuProps> = ({
               <button
                 aria-label="chapter list button"
                 className={buttonVariants({
-                  variant: "secondary",
+                  variant: "destructive",
                   className:
-                    "flex-1 flex justify-center items-center space-x-1",
+                    "flex-1 flex justify-center items-center space-x-1 bg-slate-200 hover:bg-slate-300",
                 })}
               >
                 <span className="line-clamp-1">
@@ -175,7 +171,7 @@ const Menu: FC<MenuProps> = ({
                       className="p-0 mt-1.5"
                     >
                       <Link
-                        href={`/chapter/${chapter.id}`}
+                        href={`/chapter/${chapter.mangaId}/${chapter.id}`}
                         className="flex-1 flex items-center gap-1 p-1.5"
                       >
                         {chapter.id === value?.id && (
@@ -194,7 +190,10 @@ const Menu: FC<MenuProps> = ({
           <Link
             href={nextChapterUrl}
             aria-label="next chapter link button"
-            className={buttonVariants({ variant: "secondary" })}
+            className={cn(
+              buttonVariants({ variant: "destructive" }),
+              "bg-slate-200 hover:bg-slate-300"
+            )}
           >
             <ChevronRight />
           </Link>
@@ -202,7 +201,7 @@ const Menu: FC<MenuProps> = ({
       </div>
 
       <div className="mt-8 space-y-1.5">
-        <p className="text-xl">Kiểu đọc</p>
+        {/* <p className="text-xl">Kiểu đọc</p> */}
 
         <div className="flex items-center gap-3">
           {layoutOpts.map((opt, idx) => (
@@ -212,10 +211,10 @@ const Menu: FC<MenuProps> = ({
               aria-label="layout change button"
               key={idx}
               className={cn(
-                buttonVariants({ variant: "secondary" }),
-                "flex-1 gap-1 transition-colors z-[1]",
+                buttonVariants({ variant: "destructive" }),
+                "flex-1 gap-1 transition-colors z-[1] bg-slate-200 hover:bg-slate-300",
                 {
-                  "bg-primary text-primary-foreground hover:bg-primary/90":
+                  "bg-slate-600 hover:bg-slate-500 text-white":
                     layout === opt.type,
                 }
               )}
@@ -241,10 +240,10 @@ const Menu: FC<MenuProps> = ({
             aria-label="layout change button"
             key={idx}
             className={cn(
-              buttonVariants({ variant: "secondary" }),
-              "flex-1 gap-1 transition-colors",
+              buttonVariants({ variant: "destructive" }),
+              "flex-1 gap-1 transition-colors bg-slate-200 hover:bg-slate-300",
               {
-                "bg-primary text-primary-foreground hover:bg-primary/90":
+                "bg-slate-600 hover:bg-slate-500 text-white":
                   direction === opt.type,
                 "-z-[1]": layout === "VERTICAL",
               }
@@ -258,27 +257,17 @@ const Menu: FC<MenuProps> = ({
 
       <div
         className={cn(
-          "mt-6 flex justify-between items-center transition-[margin] duration-300",
+          "flex justify-between items-center transition-[margin] duration-300",
           {
-            "-mt-7": layout === "VERTICAL",
+            "-mt-[3.25rem]": layout === "VERTICAL",
           }
         )}
-      >
-        <p>Tự động chuyển Chapter</p>
-        <Switch
-          aria-label="continuous chapter switch"
-          aria-checked={isContinuosEnabled === "true"}
-          checked={isContinuosEnabled === "true"}
-          onCheckedChange={(checked) =>
-            setContinuous(checked ? "true" : "false")
-          }
-        />
-      </div>
+      ></div>
 
       {!fullscreen ? (
         <Button
-          variant={"secondary"}
-          className="mt-6 w-full space-x-2"
+          variant={"destructive"}
+          className="mt-3 w-full space-x-2 bg-slate-200 hover:bg-slate-300"
           onClick={(e) => {
             e.preventDefault();
             e.stopPropagation();
@@ -291,7 +280,7 @@ const Menu: FC<MenuProps> = ({
       ) : (
         <Button
           variant={"destructive"}
-          className="mt-6 w-full space-x-2"
+          className="mt-6 w-full space-x-2  bg-slate-200 hover:bg-slate-300"
           onClick={(e) => {
             e.preventDefault();
             e.stopPropagation();

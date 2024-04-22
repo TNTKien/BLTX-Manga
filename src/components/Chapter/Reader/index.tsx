@@ -18,10 +18,10 @@ const Bottom = dynamic(() => import("./Bottom"), { ssr: false });
 const Menu = dynamic(() => import("./Menu"), { ssr: false });
 
 interface ReaderProps {
-  prevChapter: Pick<Chapter, "id" | "title" | "pages"> | null;
-  nextChapter: Pick<Chapter, "id" | "title" | "pages"> | null;
+  prevChapter: Pick<Chapter, "id" | "title" | "pages" | "mangaId"> | null;
+  nextChapter: Pick<Chapter, "id" | "title" | "pages" | "mangaId"> | null;
   chapter: Pick<Chapter, "id" | "title" | "pages" | "mangaId"> & {
-    chapter: Pick<Chapter, "id" | "title" | "pages" | "mangaId">[];
+    chapters: Pick<Chapter, "id" | "title" | "pages" | "mangaId">[];
   };
 }
 
@@ -220,7 +220,7 @@ const Reader: FC<ReaderProps> = ({ prevChapter, nextChapter, chapter }) => {
           images={chapter.pages}
           nextChapterUrl={
             !!nextChapter
-              ? `/chapter/${nextChapter.id}`
+              ? `/chapter/${chapter.mangaId}/${nextChapter.id}`
               : `/manga/${chapter.mangaId}`
           }
           hasNextChapter={!!nextChapter}
@@ -231,15 +231,15 @@ const Reader: FC<ReaderProps> = ({ prevChapter, nextChapter, chapter }) => {
           title={`${!!chapter.title ? `${chapter.title}` : ""}`}
           prevChapterUrl={
             !!prevChapter
-              ? `/chapter/${prevChapter.id}`
+              ? `/chapter/${chapter.mangaId}/${prevChapter.id}`
               : `/manga/${chapter.mangaId}`
           }
           nextChapterUrl={
             !!nextChapter
-              ? `/chapter/${nextChapter.id}`
+              ? `/chapter/${chapter.mangaId}/${nextChapter.id}`
               : `/manga/${chapter.mangaId}`
           }
-          chapterList={chapter.chapter}
+          chapterList={chapter.chapters}
         />
       </section>
 

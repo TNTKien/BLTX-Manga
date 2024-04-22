@@ -5,8 +5,8 @@ import { useCallback, useRef, useState } from "react";
 export type ContinuousType = "true" | "false";
 
 type navChapterProps = {
-  prevChapter: Pick<Chapter, "id" | "title"> | null;
-  nextChapter: Pick<Chapter, "id" | "title"> | null;
+  prevChapter: Pick<Chapter, "id" | "title" | "mangaId"> | null;
+  nextChapter: Pick<Chapter, "id" | "title" | "mangaId"> | null;
   mangaId: string;
 };
 
@@ -31,14 +31,22 @@ const useNavChapter = ({
     () =>
       isEnabled === "false"
         ? null
-        : router.push(!!prevChapter ? `/chapter/${prevChapter.id}` : mangaId),
+        : router.push(
+            !!prevChapter
+              ? `/chapter/${prevChapter.mangaId}/${prevChapter.id}`
+              : mangaId
+          ),
     [isEnabled, router, prevChapter, mangaId]
   );
   const goToNext = useCallback(
     () =>
       isEnabled === "false"
         ? null
-        : router.push(!!nextChapter ? `/chapter/${nextChapter.id}` : mangaId),
+        : router.push(
+            !!nextChapter
+              ? `/chapter/${nextChapter.mangaId}/${nextChapter.id}`
+              : mangaId
+          ),
     [isEnabled, mangaId, nextChapter, router]
   );
 

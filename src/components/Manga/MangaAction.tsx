@@ -44,7 +44,7 @@ const MangaAction: FC<MangaActionProps> = async ({ manga }) => {
     <>
       {!!chapterId && (
         <Link
-          href={`/chapter/${chapterId}`}
+          href={`/chapter/${manga.id}/${chapterId}`}
           className={buttonVariants({
             className:
               "min-w-[9rem] md:min-w-[11.5rem] lg:min-w-[13.5rem] gap-1.5",

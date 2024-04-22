@@ -146,7 +146,11 @@ const page: FC<pageProps> = async ({ params }) => {
 
         <section className="mx-1 md:px-4 md:mx-9 space-y-8">
           <div className="p-2 rounded-md md:bg-primary-foreground/95">
-            <Accordion type="multiple" defaultValue={["chapter"]}>
+            <Accordion
+              className="grid grid-cols-1 md:grid-cols-2 gap-3"
+              type="multiple"
+              defaultValue={["chapter"]}
+            >
               <AccordionItem value="chapter">
                 <AccordionTrigger>
                   Danh sách chương & Bình luận
@@ -189,7 +193,7 @@ const page: FC<pageProps> = async ({ params }) => {
                 </AccordionContent>
               </AccordionItem>
 
-              <AccordionItem value="facebook">
+              {/* <AccordionItem value="facebook">
                 <AccordionTrigger>Facebook</AccordionTrigger>
                 <AccordionContent>
                   <FacebookEmbed
@@ -205,7 +209,7 @@ const page: FC<pageProps> = async ({ params }) => {
                 <AccordionContent>
                   <DiscordEmbed discordLink={"https://discord.gg/hvn"} />
                 </AccordionContent>
-              </AccordionItem>
+              </AccordionItem> */}
             </Accordion>
           </div>
         </section>

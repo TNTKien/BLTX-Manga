@@ -1,6 +1,6 @@
 // import { getAuthSession } from '@/lib/auth';
 import { db } from "@/lib/db";
-import type { Chapter } from "@prisma/client";
+import type { Chapter, Manga } from "@prisma/client";
 import dynamic from "next/dynamic";
 import type { FC } from "react";
 import type { Metadata } from "next";
@@ -30,6 +30,11 @@ async function getChapterList(mangaId: string) {
   return data.data as Chapter[];
 }
 
+async function getManga(mangaId: string) {
+  const { data } = await axiosInstance.get(`/api/manga/${mangaId}`);
+  return data.data as Manga;
+}
+
 const page: FC<pageProps> = async ({ params }) => {
   const chapter = await getChapter(params.mangaId, params.chapterId);
   if (!chapter) return notFound();
@@ -39,8 +44,16 @@ const page: FC<pageProps> = async ({ params }) => {
   const navChapter = getNavChapter(chapter.id, chapterList);
 
   const chapterArgs = {
-    chapter: chapterList,
-    ...chapter,
+    id: chapter.id,
+    title: chapter.title,
+    pages: chapter.pages,
+    mangaId: chapter.mangaId,
+    chapters: chapterList.map((chapter) => ({
+      id: chapter.id,
+      title: chapter.title,
+      pages: chapter.pages,
+      mangaId: chapter.mangaId,
+    })),
   };
 
   return (
@@ -58,7 +71,7 @@ export default page;
 
 const getNavChapter = (
   currentId: string,
-  chaptersList: Pick<Chapter, "id" | "title" | "pages">[]
+  chaptersList: Pick<Chapter, "id" | "title" | "pages" | "mangaId">[]
 ) => {
   const index = chaptersList.findIndex((chapter) => chapter.id === currentId);
   if (index === -1) return null;
@@ -68,6 +81,34 @@ const getNavChapter = (
     next: index === chaptersList.length - 1 ? null : chaptersList[index + 1],
   };
 };
+
+export async function generateMetadata({
+  params,
+}: pageProps): Promise<Metadata> {
+  const chapter = await getChapter(params.mangaId, params.chapterId);
+
+  if (!chapter)
+    return {
+      title: `Đọc truyện ${params.mangaId}`,
+    };
+
+  const manga = await getManga(params.mangaId);
+
+  const title = `${!!chapter.title ? `${chapter.title}` : ""} - ${manga.title}`;
+  const description = `Đọc truyện ${manga.title} ${chapter.title}.`;
+
+  return {
+    title: {
+      absolute: title,
+      default: title,
+    },
+    description,
+    keywords: ["Chapter", "Manga", "Truyện tranh", manga.title],
+    alternates: {
+      canonical: `${process.env.NEXTAUTH_URL}/chapter/${params.mangaId}/${params.chapterId}`,
+    },
+  };
+}
 
 // const updateHistory = (mangaId: string, chapterId: string) =>
 //   getAuthSession().then(async (session) => {

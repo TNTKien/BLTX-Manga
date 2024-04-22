@@ -15,6 +15,7 @@ import { Search, BookMarked } from "lucide-react";
 export default function NavbarComponent() {
   return (
     <Navbar
+      position="static"
       className="justify-between rounded-b-md bg-transparent"
       classNames={{
         wrapper: "max-w-full",
