@@ -48,6 +48,24 @@ const page: FC<pageProps> = async ({ params }) => {
   const manga = await getManga(params.mangaId);
   if (!manga) return notFound();
 
+  const otherMangas = await db.manga.findMany({
+    take: 4,
+    where: {
+      userId: manga.userId,
+      id: {
+        not: manga.id,
+      },
+    },
+    orderBy: {
+      totalViews: "desc",
+    },
+    select: {
+      id: true,
+      title: true,
+      cover: true,
+    },
+  });
+
   const jsonLd = generateJsonLd(manga, params.mangaId);
 
   return (
@@ -87,7 +105,9 @@ const page: FC<pageProps> = async ({ params }) => {
                 {manga.title}
               </h1>
               <h1 className="absolute bottom-5 left-0.5 text-white font-normal text-md sm:text-base sm:truncate flex-shrink-0">
-                {manga.author}
+                {manga.author.length >= 2
+                  ? manga.author.join(", ")
+                  : manga.author}
               </h1>
             </div>
 
@@ -117,7 +137,7 @@ const page: FC<pageProps> = async ({ params }) => {
                       href={`/advanced-search?include=${tag}`}
                       className="block p-0.5 rounded-md font-medium text-[.75rem] bg-red-300 text-primary-foreground"
                     >
-                      {tag}
+                      {tag.replace(/_/g, " ")}
                     </Link>
                   </li>
                 ))}
@@ -146,11 +166,7 @@ const page: FC<pageProps> = async ({ params }) => {
 
         <section className="mx-1 md:px-4 md:mx-9 space-y-8">
           <div className="p-2 rounded-md md:bg-primary-foreground/95">
-            <Accordion
-              className="grid grid-cols-1 md:grid-cols-2 gap-3"
-              type="multiple"
-              defaultValue={["chapter"]}
-            >
+            <Accordion type="multiple" defaultValue={["chapter"]}>
               <AccordionItem value="chapter">
                 <AccordionTrigger>
                   Danh sách chương & Bình luận
@@ -162,36 +178,38 @@ const page: FC<pageProps> = async ({ params }) => {
                 </AccordionContent>
               </AccordionItem>
 
-              <AccordionItem value="other">
-                <AccordionTrigger>Cùng người đăng</AccordionTrigger>
-                <AccordionContent asChild>
-                  {/* <ul className="space-y-3">
-                      {manga.creator.manga.map((otherManga) => (
+              {otherMangas && otherMangas.length > 0 && (
+                <AccordionItem value="other">
+                  <AccordionTrigger>Cùng người đăng</AccordionTrigger>
+                  <AccordionContent asChild>
+                    <ul className="space-y-3 grid grid-cols-1 md:grid-cols-2 gap-2">
+                      {otherMangas.map((otherManga) => (
                         <li key={otherManga.id}>
                           <Link
-                            href={`/manga/${otherManga.slug}`}
-                            className="grid grid-cols-[.3fr_1fr] gap-3 transition-colors rounded-md group hover:bg-zinc-800"
+                            href={`/manga/${otherManga.id}`}
+                            className="grid grid-cols-[.3fr_1fr] gap-3 transition-colors rounded-md"
                           >
                             <MangaImage
                               manga={otherManga}
                               sizes="(max-width: 640px) 22vw, 10vw"
-                              className="transition-transform group-hover:scale-105"
+                              className="transition-transform"
                             />
 
                             <div className="space-y-0.5">
                               <p className="text-lg font-semibold">
-                                {otherManga.name}
+                                {otherManga.title}
                               </p>
-                              <p className="line-clamp-3">
-                                {otherManga.review}
-                              </p>
+                              {/* <p className="line-clamp-3">
+                    {otherManga.review}
+                  </p> */}
                             </div>
                           </Link>
                         </li>
                       ))}
-                    </ul> */}
-                </AccordionContent>
-              </AccordionItem>
+                    </ul>
+                  </AccordionContent>
+                </AccordionItem>
+              )}
 
               {/* <AccordionItem value="facebook">
                 <AccordionTrigger>Facebook</AccordionTrigger>
