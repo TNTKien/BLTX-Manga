@@ -158,17 +158,17 @@ const Menu: FC<MenuProps> = ({
                 <ChevronRight className="rotate-90" />
               </button>
             </PopoverTrigger>
-            <PopoverContent className="p-0.5">
+            <PopoverContent className="p-0.5 bg-slate-200">
               <Command>
-                <CommandInput placeholder="Chapter" />
-                <CommandEmpty>Không tìm thấy Chapter</CommandEmpty>
+                {/* <CommandInput placeholder="Chapter" />
+                <CommandEmpty>Không tìm thấy Chapter</CommandEmpty> */}
                 <CommandGroup className="max-h-72 overflow-y-auto md:scrollbar md:dark:scrollbar--dark">
-                  {chapterList.map((chapter) => (
+                  {chapterList.map((chapter, index) => (
                     <CommandItem
-                      key={chapter.id}
-                      //value={`${chapter.chapterIndex}`}
+                      key={index}
+                      value={`${index}`}
                       onSelect={() => setValue(chapter)}
-                      className="p-0 mt-1.5"
+                      className="p-0 hover:bg-slate-300"
                     >
                       <Link
                         href={`/chapter/${chapter.mangaId}/${chapter.id}`}

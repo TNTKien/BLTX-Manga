@@ -55,7 +55,7 @@ const page: FC<pageProps> = async ({ params }) => {
       mangaId: chapter.mangaId,
     })),
   };
-
+  //console.log(chapterArgs);
   return (
     <main className="relative h-[100dvh] bg-background space-y-3">
       <Reader

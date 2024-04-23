@@ -5,6 +5,7 @@ import { cookies, headers } from "next/headers";
 const axiosInstance = axios.create({
   baseURL,
   timeout: 10000,
+  withCredentials: true,
 });
 
 axiosInstance.interceptors.response.use(
@@ -12,7 +13,6 @@ axiosInstance.interceptors.response.use(
     return response;
   },
   async (error) => {
-    console.log(error);
     const originalConfig = error.config;
     //console.log(error.response.status);
     if (
