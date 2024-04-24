@@ -11,6 +11,8 @@ import {
   DropdownMenu,
   Avatar,
   Button,
+  Image,
+  AvatarIcon,
 } from "@nextui-org/react";
 import { Search, BookMarked } from "lucide-react";
 import { usePathname } from "next/navigation";
@@ -35,8 +37,10 @@ export default function NavbarComponent() {
       <NavbarContent justify="start">
         <NavbarBrand className="mr-4">
           <Link href="/" color="foreground">
-            <BookMarked />
-            <p className="hidden sm:block font-bold text-inherit">BLTX</p>
+            <Image src="/static/logo.svg" />
+            <p className="hidden sm:block font-bold text-inherit text-xl space-x-1">
+              BLTX
+            </p>
           </Link>
         </NavbarBrand>
       </NavbarContent>
@@ -56,19 +60,18 @@ export default function NavbarComponent() {
           type="search"
         />
 
-        <Dropdown placement="bottom-end">
-          <DropdownTrigger>
-            <Avatar
-              isBordered
-              as="button"
-              className="transition-transform"
-              size="sm"
-              src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIGNsYXNzPSJsdWNpZGUgbHVjaWRlLXVzZXItcm91bmQiPjxjaXJjbGUgY3g9IjEyIiBjeT0iOCIgcj0iNSIvPjxwYXRoIGQ9Ik0yMCAyMWE4IDggMCAwIDAtMTYgMCIvPjwvc3ZnPg=="
-            />
-          </DropdownTrigger>
-
-          {!!user && !loading ? (
-            <>
+        {!!user && !loading ? (
+          <>
+            <Dropdown placement="bottom-end">
+              <DropdownTrigger>
+                <Avatar
+                  isBordered
+                  as="button"
+                  className="transition-transform"
+                  size="md"
+                  src="/static/user-avt.png"
+                />
+              </DropdownTrigger>
               <DropdownMenu aria-label="Profile Actions" variant="flat">
                 <DropdownItem key="username" className="h-14 gap-2">
                   <p className="font-semibold">{user.username}</p>
@@ -86,9 +89,20 @@ export default function NavbarComponent() {
                   Đăng xuất
                 </DropdownItem>
               </DropdownMenu>
-            </>
-          ) : (
-            <>
+            </Dropdown>
+          </>
+        ) : (
+          <>
+            <Dropdown placement="bottom-end">
+              <DropdownTrigger>
+                <Avatar
+                  icon={<AvatarIcon />}
+                  isBordered
+                  as="button"
+                  className="transition-transform"
+                  size="md"
+                />
+              </DropdownTrigger>
               <DropdownMenu aria-label="Profile Actions" variant="flat">
                 <DropdownItem key="sign-in" href="/sign-in">
                   Đăng nhập
@@ -97,9 +111,9 @@ export default function NavbarComponent() {
                   Đăng ký
                 </DropdownItem>
               </DropdownMenu>
-            </>
-          )}
-        </Dropdown>
+            </Dropdown>
+          </>
+        )}
       </NavbarContent>
     </Navbar>
   );
