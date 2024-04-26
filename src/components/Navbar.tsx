@@ -18,6 +18,7 @@ import { Search, BookMarked } from "lucide-react";
 import { usePathname } from "next/navigation";
 import { useSession } from "./SessionProviders";
 import axiosInstance from "@/lib/axios";
+import { useRouter } from "next/navigation";
 
 export default function NavbarComponent() {
   const pathName = usePathname();
@@ -25,6 +26,7 @@ export default function NavbarComponent() {
   if (/^(\/chapter\/)/g.test(pathName)) return null;
 
   const { user, error, loading } = useSession();
+  const router = useRouter();
 
   return (
     <Navbar
@@ -58,6 +60,14 @@ export default function NavbarComponent() {
           size="sm"
           startContent={<Search size={18} />}
           type="search"
+          onKeyDown={(e) => {
+            if (e.key === "Enter") {
+              const search = e.currentTarget.value;
+              if (search) {
+                router.push(`/search/manga?q=${search}`);
+              }
+            }
+          }}
         />
 
         {!!user && !loading ? (
