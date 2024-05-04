@@ -93,7 +93,6 @@ interface pageProps {
 
 const page: FC<pageProps> = async ({ params }) => {
   const session = await getAuthSession();
-
   const user = await db.user.findUnique({
     where: {
       id: params.userId,

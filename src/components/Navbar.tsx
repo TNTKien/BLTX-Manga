@@ -89,7 +89,7 @@ export default function NavbarComponent() {
                 <DropdownItem key="profile" href={`/user/${user.id}`}>
                   Trang cá nhân
                 </DropdownItem>
-                <DropdownItem key="manage" showDivider>
+                <DropdownItem key="manage" href="/manage/mangas" showDivider>
                   Quản lý truyện
                 </DropdownItem>
                 <DropdownItem

@@ -10,7 +10,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className="antialiased px-4">
+      <body className="antialiased !px-4">
         <Providers>
           <NavbarComponent />
           {children}
