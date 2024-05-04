@@ -33,6 +33,7 @@
     "embla-carousel-react": "^8.0.2",
     "embla-carousel-wheel-gestures": "^8.0.0-rc05",
     "framer-motion": "^11.0.28",
+    "lru-cache": "^10.2.2",
     "lucide-react": "^0.368.0",
     "next": "14.2.1",
     "next-auth": "^4.24.7",

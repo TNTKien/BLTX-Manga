@@ -16,7 +16,7 @@ const Leaderboard = dynamic(() => import("@/components/LeaderBoard"), {
 });
 
 export const metadata: Metadata = {
-  title: "Bac Le Than Xa",
+  title: "MangaDex",
   description:
     "Web đọc truyện tranh online tiện ích nhất được cập nhật liên tục mỗi ngày",
   keywords: ["Manga", "Truyện tranh", "Bac Le Than Xa", "BLTX"],

@@ -41,7 +41,7 @@ export default function NavbarComponent() {
           <Link href="/" color="foreground">
             <Image src="/static/logo.svg" />
             <p className="hidden sm:block font-bold text-inherit text-xl space-x-1">
-              BLTX
+              MangaDex
             </p>
           </Link>
         </NavbarBrand>
@@ -84,9 +84,11 @@ export default function NavbarComponent() {
               </DropdownTrigger>
               <DropdownMenu aria-label="Profile Actions" variant="flat">
                 <DropdownItem key="username" className="h-14 gap-2">
-                  <p className="font-semibold">{user.username}</p>
+                  <p className="font-semibold">Xin chào, {user.username}!</p>
                 </DropdownItem>
-                <DropdownItem key="profile">Trang cá nhân</DropdownItem>
+                <DropdownItem key="profile" href={`/user/${user.id}`}>
+                  Trang cá nhân
+                </DropdownItem>
                 <DropdownItem key="manage" showDivider>
                   Quản lý truyện
                 </DropdownItem>

@@ -3,6 +3,15 @@ import UserBanner from "@/components/User/UserBanner";
 import Username from "@/components/User/Username";
 import { getAuthSession } from "@/lib/auth";
 import { db } from "@/lib/db";
+import Link from "next/link";
+import MangaImage from "@/components/Manga/components/MangaImage";
+import MangaCard from "@/components/Manga/components/MangaCard";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/Accordion";
 import format from "date-fns/format";
 import vi from "date-fns/locale/vi";
 import { Users2, Wifi } from "lucide-react";
@@ -97,6 +106,11 @@ const page: FC<pageProps> = async ({ params }) => {
           manga: true,
         },
       },
+      manga: {
+        orderBy: {
+          createdAt: "desc",
+        },
+      },
     },
   });
 
@@ -134,14 +148,27 @@ const page: FC<pageProps> = async ({ params }) => {
 
         <hr className="h-0.5 rounded-full dark:bg-zinc-50 my-4" />
 
-        <div className="flex flex-wrap justify-between items-center gap-2">
+        {/* <div className="flex flex-wrap justify-between items-center gap-2">
           <dl className="flex items-center gap-1.5">
-            <dt>Truyện đã đăng</dt>
+            <dt>Truyện đã đăng: </dt>
             <dd>{user._count.manga}</dd>
           </dl>
         </div>
 
-        <hr className="h-0.5 rounded-full dark:bg-zinc-50 my-4" />
+        <hr className="h-0.5 rounded-full dark:bg-zinc-50 my-4" /> */}
+
+        <Accordion type="multiple" defaultValue={["chapter"]}>
+          <AccordionItem value="chapter">
+            <AccordionTrigger>Truyện đã đăng</AccordionTrigger>
+            <AccordionContent asChild>
+              <ul className="grid grid-cols-1 md:grid-cols-3 gap-3">
+                {user.manga.map((m) => (
+                  <MangaCard key={m.id} manga={m} />
+                ))}
+              </ul>
+            </AccordionContent>
+          </AccordionItem>
+        </Accordion>
 
         {/* <dl className="flex items-center gap-1.5">
           <dt>Gia nhập:</dt>
