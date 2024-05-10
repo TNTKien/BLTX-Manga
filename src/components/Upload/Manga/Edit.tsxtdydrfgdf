@@ -1,0 +1,171 @@
+"use client";
+
+import MangaAuthorSkeleton from "@/components/Skeleton/MangaAuthorSkeleton";
+import MangaCoverSkeleton from "@/components/Skeleton/MangaCoverSkeleton";
+import MangaImageSkeleton from "@/components/Skeleton/MangaImageSkeleton";
+import MangaTagSkeleton from "@/components/Skeleton/MangaTagSkeleton";
+import { Button } from "@/components/ui/Button";
+import { Form } from "@/components/ui/Form";
+import { useCustomToast } from "@/hooks/use-custom-toast";
+import { toast } from "@/hooks/use-toast";
+// import { Tags } from "@/lib/query";
+import {
+  MangaUploadPayload,
+  MangaUploadValidator,
+} from "@/lib/validators/manga";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Manga } from "@prisma/client";
+import { useMutation } from "@tanstack/react-query";
+import axios, { AxiosError } from "axios";
+import dynamic from "next/dynamic";
+import { useRouter } from "next/navigation";
+import { FC } from "react";
+import { useForm } from "react-hook-form";
+import MangaDescForm from "./MangaDescFormField";
+import MangaNameForm from "./MangaNameFormField";
+import axiosInstance from "@/lib/axios";
+
+const MangaCoverFormField = dynamic(() => import("./MangaCoverFormField"), {
+  ssr: false,
+  loading: () => <MangaCoverSkeleton />,
+});
+// const MangaImageFormField = dynamic(() => import("./MangaImageFormField"), {
+//   ssr: false,
+//   loading: () => <MangaImageSkeleton />,
+// });
+// const MangaTagForm = dynamic(() => import("./MangaTagFormField"), {
+//   ssr: false,
+//   loading: () => <MangaTagSkeleton />,
+// });
+const MangaAuthorForm = dynamic(() => import("./MangaAuthorFormField"), {
+  ssr: false,
+  loading: () => <MangaAuthorSkeleton />,
+});
+
+interface EditMangaProps {
+  manga: Pick<
+    Manga,
+    "id" | "title" | "cover" | "description" | "tags" | "author"
+  >;
+}
+
+const EditManga: FC<EditMangaProps> = ({ manga }) => {
+  const { loginToast, notFoundToast, successToast, serverErrorToast } =
+    useCustomToast();
+  const router = useRouter();
+
+  const form = useForm<MangaUploadPayload>({
+    resolver: zodResolver(MangaUploadValidator),
+    defaultValues: {
+      cover: manga.cover ?? undefined,
+      title: manga.title,
+      author: manga.author,
+      description: undefined,
+    },
+  });
+
+  const { mutate: Update, isPending: isUpdatingManga } = useMutation({
+    mutationFn: async (values: MangaUploadPayload) => {
+      const { cover, title, description, author, tag } = values;
+
+      const form = new FormData();
+
+      if (!!cover) {
+        if (cover.startsWith("blob")) {
+          const blob = await fetch(cover).then((res) => res.blob());
+          if (blob.size > 4 * 1000 * 1000)
+            throw new Error("EXCEEDED_IMAGE_SIZE");
+
+          form.append("cover", blob);
+        } else {
+          form.append("cover", cover);
+        }
+      }
+
+      form.append("title", title);
+
+      form.append("description", JSON.stringify(description));
+
+      author.map((a) => form.append("author", JSON.stringify(a)));
+      //tag.map((t) => form.append("tag", JSON.stringify(t)));
+
+      const { data } = await axiosInstance.post(`/api/manga/${manga.id}`, form);
+
+      return data;
+    },
+    onError: (e) => {
+      if (e instanceof AxiosError) {
+        if (e.response?.status === 401) return loginToast();
+        if (e.response?.status === 404) return notFoundToast();
+        if (e.response?.status === 406)
+          return toast({
+            title: "Slug không hợp lệ",
+            description: "Slug đã tồn tại",
+            variant: "destructive",
+          });
+      }
+
+      if (e instanceof Error && e.message === "EXCEEDED_IMAGE_SIZE") {
+        return toast({
+          title: "Quá kích cỡ",
+          description: "Chỉ nhận ảnh dưới 4MB",
+          variant: "destructive",
+        });
+      }
+
+      return serverErrorToast();
+    },
+    onSuccess: () => {
+      router.push(`/mangas/${manga.id}`);
+      router.refresh();
+
+      return successToast();
+    },
+  });
+
+  function onSubmitHandler(values: MangaUploadPayload) {
+    const payload: MangaUploadPayload = {
+      ...values,
+      description: values.description ?? manga.description,
+    };
+
+    Update(payload);
+  }
+
+  return (
+    <Form {...form}>
+      <form onSubmit={form.handleSubmit(onSubmitHandler)} className="space-y-6">
+        <MangaCoverFormField form={form} />
+
+        <MangaNameForm form={form} />
+
+        <MangaAuthorForm form={form} existAuthors={manga.author} />
+
+        {/* <MangaTagForm form={form} tags={tags} existTags={manga.tags} /> */}
+
+        <MangaDescForm form={form} initialContent={manga.description} />
+
+        <div className="flex flex-wrap justify-end items-center gap-8">
+          <Button
+            type="button"
+            tabIndex={0}
+            variant={"destructive"}
+            onClick={() => router.back()}
+          >
+            Quay lại
+          </Button>
+          <Button
+            type="submit"
+            tabIndex={1}
+            isLoading={isUpdatingManga}
+            disabled={isUpdatingManga}
+          >
+            Cập nhật
+          </Button>
+        </div>
+      </form>
+    </Form>
+  );
+};
+
+export default EditManga;

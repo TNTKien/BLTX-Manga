@@ -70,6 +70,7 @@ function MangaTable({ data }: DataTableProps) {
           }
           className="rounded-xl bg-default-400/20 focus:bg-slate-50"
         />
+        <DataToolbar table={table} />
       </div>
 
       <Table>

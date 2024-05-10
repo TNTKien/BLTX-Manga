@@ -12,10 +12,18 @@ api.interceptors.response.use((res) => res, rotateTokenHandler);
 async function rotateTokenHandler(error: AxiosError) {
   const originalRequest = error.config;
   //console.log(error);
+  console.log(typeof window);
   if (
-    originalRequest?.url === "/api/auth/session" &&
-    error.response?.status === 400
+    // originalRequest?.url === "/api/auth/session" &&
+    //@ts-ignore
+    error.response?.data?.message === "Invalid token" &&
+    !!originalRequest &&
+    //@ts-ignore
+    !originalRequest?._retry &&
+    error.response?.status === 401
   ) {
+    //@ts-ignore
+    originalRequest._retry = true;
     try {
       if (typeof window === "undefined") {
         const cookies = (await import("next/headers")).cookies;
@@ -26,17 +34,24 @@ async function rotateTokenHandler(error: AxiosError) {
               cookies().get("authToken")?.value
             }; refreshToken=${cookies().get("refreshToken")?.value}`,
           },
+          withCredentials: true,
         });
 
         return api(originalRequest);
       }
-      const res = await api.post("/api/auth/refresh", {
-        // headers: {
-        //   Cookie: `authToken=${cookies().get(
-        //     "authToken"
-        //   )}; refreshToken=${cookies().get("refreshToken")}`,
-        // },
-      });
+      const res = await api.post(
+        "/api/auth/refresh",
+        {
+          // headers: {
+          //   Cookie: `authToken=${cookies().get(
+          //     "authToken"
+          //   )}; refreshToken=${cookies().get("refreshToken")}`,
+          // },
+        },
+        {
+          withCredentials: true,
+        }
+      );
       //console.log(res);
       return api(originalRequest);
     } catch (e) {

@@ -1,11 +1,13 @@
 "use client";
 
+import { buttonVariants } from "@/components/ui/Button";
 import { DataTableColumnHeader } from "../ColumnHeader";
 import { formatTimeToNow } from "@/lib/utils";
 import type { Manga } from "@prisma/client";
 import type { ColumnDef } from "@tanstack/react-table";
 import { MoreHorizontal } from "lucide-react";
 import dynamic from "next/dynamic";
+import Link from "next/link";
 
 const DataTableRowAction = dynamic(() => import("./RowAction"), {
   ssr: false,
@@ -35,6 +37,7 @@ export const columns: ColumnDef<MangaColumn>[] = [
       <DataTableColumnHeader column={column} title="Tên truyện" />
     ),
   },
+
   //   {
   //     id: "Trạng thái",
   //     accessorKey: "isPublished",
@@ -60,6 +63,7 @@ export const columns: ColumnDef<MangaColumn>[] = [
   },
   {
     id: "actions",
+
     cell: ({ row }) => <DataTableRowAction row={row} />,
     enableHiding: false,
   },

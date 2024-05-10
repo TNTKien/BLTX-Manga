@@ -30,6 +30,7 @@
     "@tanstack/react-table": "^8.16.0",
     "axios": "^1.6.8",
     "class-variance-authority": "^0.7.0",
+    "clsx": "^2.1.1",
     "cmdk": "0.2.0",
     "date-fns": "^3.6.0",
     "embla-carousel-autoplay": "^8.0.2",
@@ -37,7 +38,7 @@
     "embla-carousel-wheel-gestures": "^8.0.0-rc05",
     "framer-motion": "^11.0.28",
     "lru-cache": "^10.2.2",
-    "lucide-react": "^0.368.0",
+    "lucide-react": "^0.378.0",
     "next": "14.2.1",
     "next-auth": "^4.24.7",
     "next-share": "^0.27.0",
@@ -45,6 +46,9 @@
     "react": "^18",
     "react-dom": "^18",
     "react-hook-form": "^7.51.3",
+    "react-image-crop": "^11.0.5",
+    "tailwind-merge": "^2.3.0",
+    "tailwindcss-animate": "^1.0.7",
     "zod": "^3.23.3"
   },
   "devDependencies": {
