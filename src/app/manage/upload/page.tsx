@@ -11,7 +11,7 @@ const MangaUpload = dynamic(() => import("@/components/Upload/Manga"), {
 const page = async () => {
   return (
     <main className="container p-1 mb-10 space-y-10">
-      <section className="p-3 mx-10 rounded-md dark:bg-zinc-900/60 ">
+      <section className="p-3 mx-8 rounded-md dark:bg-zinc-900/60 ">
         <MangaUpload />
       </section>
     </main>

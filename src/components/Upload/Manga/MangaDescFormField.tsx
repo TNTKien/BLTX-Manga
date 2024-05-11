@@ -29,7 +29,7 @@ const MangaDescFormField: FC<MangaDescFormFieldProps> = ({ form }) => {
               placeholder="Mô tả truyện"
               autoComplete="off"
               {...field}
-              className="bg-default-400/20 focus:bg-slate-50 h-[8.8rem] resize-none"
+              className="bg-default-400/20 focus:bg-slate-50 h-[9.1rem] resize-none"
               rows={5}
             />
           </FormControl>

@@ -16,23 +16,12 @@ import { buttonVariants } from "@/components/ui/Button";
 //   DropdownMenuItem,
 //   DropdownMenuTrigger,
 // } from "@/components/ui/DropdownMenu";
-import { useCustomToast } from "@/hooks/use-custom-toast";
-import { toast } from "@/hooks/use-toast";
-import { cn } from "@/lib/utils";
 import {
   Dropdown,
   DropdownTrigger,
   DropdownMenu,
   DropdownItem,
 } from "@nextui-org/react";
-import type { Manga } from "@prisma/client";
-import { useMutation } from "@tanstack/react-query";
-import type { Row } from "@tanstack/react-table";
-import axios, { AxiosError } from "axios";
-import { Loader2, MoreHorizontal } from "lucide-react";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
-import axiosInstance from "@/lib/axios";
 import {
   Modal,
   ModalContent,
@@ -42,17 +31,29 @@ import {
   Button,
   useDisclosure,
 } from "@nextui-org/react";
+import { useCustomToast } from "@/hooks/use-custom-toast";
+import { toast } from "@/hooks/use-toast";
+import { cn } from "@/lib/utils";
+import type { Chapter } from "@prisma/client";
+import { useMutation } from "@tanstack/react-query";
+import type { Row } from "@tanstack/react-table";
+import axios, { AxiosError } from "axios";
+import { Loader2, MoreHorizontal } from "lucide-react";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
+import axiosInstance from "@/lib/axios";
 
 interface DataTableRowActionProps {
-  row: Row<Pick<Manga, "id" | "title" | "updatedAt">>;
+  row: Row<Pick<Chapter, "id" | "title" | "pages" | "mangaId" | "updatedAt">>;
 }
 
 function DataTableRowAction({ row }: DataTableRowActionProps) {
-  const manga = row.original;
-  const { refresh } = useRouter();
+  const chapter = row.original;
   const { loginToast, notFoundToast, serverErrorToast, successToast } =
     useCustomToast();
+  const { refresh } = useRouter();
+
   const [isOpen, setOpen] = useState(false);
   console.log(isOpen);
 
@@ -75,20 +76,14 @@ function DataTableRowAction({ row }: DataTableRowActionProps) {
         </DropdownTrigger>
 
         <DropdownMenu>
-          <DropdownItem key="view" href={`/manga/${manga.id}`}>
-            Xem truyện
-          </DropdownItem>
           <DropdownItem
-            key="chapter"
-            href={`/manage/mangas/${manga.id}/chapters`}
+            key="view"
+            href={`/chapter/${chapter.mangaId}/${chapter.id}`}
           >
             Xem chapter
           </DropdownItem>
-          <DropdownItem
-            key="edit"
-            href={`/manage/mangas/${manga.id}/edit`}
-            showDivider
-          >
+
+          <DropdownItem key="edit" href={``} showDivider>
             Chỉnh sửa
           </DropdownItem>
           <DropdownItem
@@ -101,7 +96,7 @@ function DataTableRowAction({ row }: DataTableRowActionProps) {
               setOpen(true);
             }}
           >
-            Xoá truyện
+            Xoá chapter
           </DropdownItem>
         </DropdownMenu>
       </Dropdown>
@@ -115,13 +110,8 @@ function DataTableRowAction({ row }: DataTableRowActionProps) {
       >
         <ModalContent>
           <ModalHeader className="flex flex-col gap-1">
-            Bạn có chắc chắn muốn xóa truyện này không?
+            Bạn có chắc chắn muốn xóa chapter này không?
           </ModalHeader>
-          {/* <ModalBody>
-            <p>
-              <strong>{manga.title}</strong>
-            </p>
-          </ModalBody> */}
           <ModalFooter>
             <Button
               color="danger"
@@ -133,7 +123,7 @@ function DataTableRowAction({ row }: DataTableRowActionProps) {
             <Button
               color="primary"
               onPress={() => {
-                deleteManga(manga.id).then(() => {
+                deleteChapter(chapter.mangaId, chapter.id).then(() => {
                   refresh();
                 });
                 setOpen(false);
@@ -148,9 +138,11 @@ function DataTableRowAction({ row }: DataTableRowActionProps) {
   );
 }
 
-async function deleteManga(mangaId: string) {
-  const { data, status } = await axiosInstance.delete(`/api/manga/${mangaId}`);
-  if (status === 204) {
+async function deleteChapter(mangaId: string, chapterId: string) {
+  const { data, status } = await axiosInstance.delete(
+    `/api/chapter/${mangaId}/${chapterId}`
+  );
+  if (status === 200) {
     toast({
       title: "Thành công ✅",
       variant: "destructive",

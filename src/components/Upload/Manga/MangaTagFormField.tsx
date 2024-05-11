@@ -21,12 +21,11 @@ import axiosInstance from "@/lib/axios";
 
 interface MangaTagFormProps {
   form: UseFormReturn<MangaUploadPayload>;
-  existTags?: tagInfoProps[];
+  existTags?: string[];
 }
 
 const MangaTagForm: FC<MangaTagFormProps> = ({ form, existTags }) => {
   const [tags, setTags] = useState<string[]>([]);
-
   const [open, setOpen] = useState(false);
   const [tagsSelected, setTagsSelected] = useState<string[]>([]);
   useEffect(() => {
@@ -35,8 +34,10 @@ const MangaTagForm: FC<MangaTagFormProps> = ({ form, existTags }) => {
       setTags(data.data);
     };
     fetchTags();
+    if (existTags) {
+      setTagsSelected(existTags);
+    }
   }, []);
-
   return (
     <FormField
       control={form.control}
@@ -46,6 +47,29 @@ const MangaTagForm: FC<MangaTagFormProps> = ({ form, existTags }) => {
           <FormLabel>Thể loại</FormLabel>
           <FormMessage />
           <div className="w-full px-3 py-2 space-y-3 rounded-md border border-input text-sm bg-default-400/20">
+            {/* {!!existTags?.length && (
+              <ul className="flex flex-wrap items-center gap-3">
+                {existTags.map((tag, index) => (
+                  <li
+                    key={index}
+                    className="flex items-center gap-2 pl-3 px-1 py-0.5 rounded-md bg-muted bg-slate-100/50"
+                  >
+                    {tag.replace(/_/g, " ")}
+                    <X
+                      className="text-red-500"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+
+                        const filteredTags = existTags.filter((t) => t !== tag);
+                        setTagsSelected(filteredTags);
+                        form.setValue("tags", filteredTags);
+                      }}
+                    />
+                  </li>
+                ))}
+              </ul>
+            )} */}
             {!!tagsSelected.length && (
               <ul className="flex flex-wrap items-center gap-3">
                 {tagsSelected.map((tag, index) => (

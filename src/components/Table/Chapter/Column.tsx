@@ -1,13 +1,11 @@
 "use client";
 
-import { buttonVariants } from "@/components/ui/Button";
-import { DataTableColumnHeader } from "../ColumnHeader";
+import { DataTableColumnHeader } from "@/components/Table/ColumnHeader";
 import { formatTimeToNow } from "@/lib/utils";
-import type { Manga } from "@prisma/client";
+import { type Chapter } from "@prisma/client";
 import type { ColumnDef } from "@tanstack/react-table";
 import { MoreHorizontal } from "lucide-react";
 import dynamic from "next/dynamic";
-import Link from "next/link";
 
 const DataTableRowAction = dynamic(() => import("./RowAction"), {
   ssr: false,
@@ -18,9 +16,12 @@ const DataTableRowAction = dynamic(() => import("./RowAction"), {
   ),
 });
 
-export type MangaColumn = Pick<Manga, "id" | "title" | "updatedAt">;
+export type ChapterColumn = Pick<
+  Chapter,
+  "id" | "title" | "pages" | "mangaId" | "updatedAt"
+>;
 
-export const columns: ColumnDef<MangaColumn>[] = [
+export const columns: ColumnDef<ChapterColumn>[] = [
   {
     id: "ID",
     accessorKey: "id",
@@ -31,11 +32,25 @@ export const columns: ColumnDef<MangaColumn>[] = [
     enableHiding: false,
   },
   {
-    id: "Tên truyện",
-    accessorKey: "title",
+    id: "Tên chapter",
+    accessorKey: "name",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Tên truyện" />
+      <DataTableColumnHeader column={column} title="Tên chapter" />
     ),
+    cell: ({ row }) => {
+      return <div>{row.original.title}</div>;
+    },
+  },
+  {
+    id: "Số lượng ảnh",
+    accessorKey: "pages",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Số lượng ảnh" />
+    ),
+    cell: ({ row }) => {
+      return <div>{row.original.pages.length}</div>;
+    },
+    enableSorting: false,
   },
   {
     id: "Cập nhật",
@@ -50,7 +65,6 @@ export const columns: ColumnDef<MangaColumn>[] = [
   },
   {
     id: "actions",
-
     cell: ({ row }) => <DataTableRowAction row={row} />,
     enableHiding: false,
   },

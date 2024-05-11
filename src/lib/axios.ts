@@ -12,7 +12,7 @@ api.interceptors.response.use((res) => res, rotateTokenHandler);
 async function rotateTokenHandler(error: AxiosError) {
   const originalRequest = error.config;
   //console.log(error);
-  console.log(typeof window);
+  //console.log(typeof window);
   if (
     // originalRequest?.url === "/api/auth/session" &&
     //@ts-ignore

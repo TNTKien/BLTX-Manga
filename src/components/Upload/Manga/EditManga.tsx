@@ -20,15 +20,12 @@ import axios, { AxiosError } from "axios";
 import dynamic from "next/dynamic";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
-//import MangaAltNameForm from "./MangaAltNameFormField";
 import MangaDescForm from "./MangaDescFormField";
-// import MangaDiscForm from "./MangaDiscFormField";
-// import MangaFBForm from "./MangaFBFormField";
 import MangaNameForm from "./MangaNameFormField";
-// import MangaReviewForm from "./MangaReviewFormField";
-// import MangaSlugForm from "./MangaSlugFormField";
-
 import axiosInstance from "@/lib/axios";
+import { Manga } from "@prisma/client";
+import { FC } from "react";
+import { baseURL } from "@/utils/config";
 
 const MangaImageForm = dynamic(() => import("./MangaImageFormField"), {
   ssr: false,
@@ -43,7 +40,13 @@ const MangaAuthorForm = dynamic(() => import("./MangaAuthorFormField"), {
   loading: () => <MangaAuthorSkeleton />,
 });
 
-const MangaUpload = () => {
+interface EditMangaProps {
+  manga: Pick<
+    Manga,
+    "id" | "title" | "cover" | "description" | "tags" | "author"
+  >;
+}
+const EditManga: FC<EditMangaProps> = ({ manga }) => {
   const router = useRouter();
   const {
     notFoundToast,
@@ -56,16 +59,15 @@ const MangaUpload = () => {
   const form = useForm<MangaUploadPayload>({
     resolver: zodResolver(MangaUploadValidator),
     defaultValues: {
-      cover: undefined,
-      title: "",
-      description: undefined,
-      author: "",
-      tags: [],
+      cover: baseURL + manga.cover,
+      title: manga.title,
+      author: manga.author.join(", "),
+      description: manga.description,
+      tags: manga.tags,
     },
   });
 
-  const { mutate: Upload, isPending: isUploadManga } = useMutation({
-    mutationKey: ["upload-manga"],
+  const { mutate: Update, isPending: isUpdatingManga } = useMutation({
     mutationFn: async (values: MangaUploadPayload) => {
       const { title, description, author, cover, tags } = values;
 
@@ -77,6 +79,8 @@ const MangaUpload = () => {
         if (blob.size > 4 * 1000 * 1000) throw new Error("EXCEEDED_IMAGE_SIZE");
 
         form.append("cover", blob, "cover.jpg");
+      } else {
+        form.append("cover", cover.replace(baseURL, ""));
       }
 
       form.append("title", title);
@@ -89,18 +93,14 @@ const MangaUpload = () => {
 
       tags.map((t) => form.append("tags", t.replace(/ /g, "_")));
 
-      const { data } = await axiosInstance.post("/api/manga", form);
+      console.log(form.get("cover"));
+
+      const { data } = await axiosInstance.put(`/api/manga/${manga.id}`, form);
 
       return data;
     },
     onError: (e) => {
       if (e instanceof AxiosError) {
-        if (e.response?.status === 409)
-          return toast({
-            title: "Trùng lặp manga",
-            description: "Bạn đã tạo manga này rồi",
-            variant: "destructive",
-          });
         if (e.response?.status === 401) return loginToast();
         if (e.response?.status === 404) return notFoundToast();
         if (e.response?.status === 400) return verifyToast();
@@ -129,14 +129,22 @@ const MangaUpload = () => {
       return successToast();
     },
   });
-
   const onSubmitHandler = (values: MangaUploadPayload) => {
-    Upload(values);
+    const payload: MangaUploadPayload = {
+      ...values,
+      description: values.description ?? manga.description,
+      // cover:
+      //   values.cover.replace(baseURL, "") ?? manga.cover.replace(baseURL, ""),
+    };
+    //console.log(payload);
+    Update(payload);
+
+    // Update(values);
   };
 
   return (
     <>
-      <h1 className="text-2xl font-semibold">THÊM TRUYỆN MỚI</h1>
+      <h1 className="text-2xl font-semibold">SỬA TRUYỆN</h1>
       <Divider className="my-4" />
       <Form {...form}>
         <form
@@ -145,28 +153,21 @@ const MangaUpload = () => {
         >
           <div className="relative grid grid-cols-1 md:grid-cols-[.3fr_1fr] gap-7">
             <div className="row-span-full">
-              <MangaImageForm form={form} />
+              <MangaImageForm form={form} exsistImage={manga.cover} />
             </div>
             <div className="h-full">
               <MangaNameForm form={form} />
 
               <MangaAuthorForm form={form} />
 
-              <MangaTagForm form={form} />
+              <MangaTagForm
+                form={form}
+                existTags={manga.tags.map((t) => t.replace(/_/g, " "))}
+              />
 
               <MangaDescForm form={form} />
             </div>
           </div>
-
-          {/* <MangaImageForm form={form} />
-
-          <MangaNameForm form={form} />
-
-          <MangaAuthorForm form={form} />
-
-          <MangaTagForm form={form} />
-
-          <MangaDescForm form={form} /> */}
 
           <div className="flex flex-wrap justify-end items-center gap-2">
             <Button
@@ -180,10 +181,10 @@ const MangaUpload = () => {
             <Button
               type="submit"
               tabIndex={1}
-              isLoading={isUploadManga}
-              disabled={isUploadManga}
+              isLoading={isUpdatingManga}
+              disabled={isUpdatingManga}
             >
-              Đăng
+              Sửa
             </Button>
           </div>
         </form>
@@ -192,4 +193,4 @@ const MangaUpload = () => {
   );
 };
 
-export default MangaUpload;
+export default EditManga;

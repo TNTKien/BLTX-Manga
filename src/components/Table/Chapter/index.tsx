@@ -2,6 +2,7 @@
 
 import { Input } from "@/components/ui/Input";
 import { Table, TableBody, TableCell, TableRow } from "@/components/ui/Table";
+import { useInterval } from "@mantine/hooks";
 import type {
   ColumnFiltersState,
   SortingState,
@@ -15,12 +16,14 @@ import {
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import dynamic from "next/dynamic";
+import dynamic from "next/dist/shared/lib/dynamic";
 import Link from "next/link";
-import { useState } from "react";
+import { usePathname } from "next/navigation";
+import { useEffect, useState } from "react";
 import TableDataHeader from "../TableHeader";
 import TablePagination from "../TablePagination";
-import { MangaColumn, columns } from "./Column";
+import { ChapterColumn, columns } from "./Column";
+import clearCache from "./clearCache";
 
 const DataToolbar = dynamic(() => import("./Toolbar"), {
   ssr: false,
@@ -33,9 +36,13 @@ const DataToolbar = dynamic(() => import("./Toolbar"), {
 });
 
 interface DataTableProps {
-  data: MangaColumn[];
+  data: ChapterColumn[];
 }
-function MangaTable({ data }: DataTableProps) {
+
+function ChapterTable({ data }: DataTableProps) {
+  const pathName = usePathname();
+  const interval = useInterval(() => clearCache(pathName), 15000);
+
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilter] = useState<ColumnFiltersState>([]);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
@@ -48,25 +55,32 @@ function MangaTable({ data }: DataTableProps) {
       columnFilters,
       columnVisibility,
     },
+    onSortingChange: setSorting,
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
-    onSortingChange: setSorting,
     getSortedRowModel: getSortedRowModel(),
     onColumnFiltersChange: setColumnFilter,
     getFilteredRowModel: getFilteredRowModel(),
     onColumnVisibilityChange: setColumnVisibility,
   });
 
+  useEffect(() => {
+    interval.start();
+
+    return interval.stop;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   return (
     <div>
       <div className="flex items-center gap-2 py-4 max-sm:flex-wrap">
         <Input
-          placeholder="Lọc tên truyện"
+          placeholder="Lọc tên chapter"
           value={
-            (table.getColumn("Tên truyện")?.getFilterValue() as string) ?? ""
+            (table.getColumn("Tên chapter")?.getFilterValue() as string) ?? ""
           }
           onChange={(e) =>
-            table.getColumn("Tên truyện")?.setFilterValue(e.target.value)
+            table.getColumn("Tên chapter")?.setFilterValue(e.target.value)
           }
           className="rounded-lg bg-default-400/20 focus:bg-slate-50"
         />
@@ -84,7 +98,7 @@ function MangaTable({ data }: DataTableProps) {
                 data-state={row.getIsSelected() && "selected"}
               >
                 {row.getVisibleCells().map((cell) => {
-                  if (cell.column.id === "actions") {
+                  if (cell.column.id !== "actions") {
                     return (
                       <TableCell key={cell.id}>
                         {flexRender(
@@ -96,12 +110,10 @@ function MangaTable({ data }: DataTableProps) {
                   } else {
                     return (
                       <TableCell key={cell.id}>
-                        <Link href={`/manga/${row.original.id}`}>
-                          {flexRender(
-                            cell.column.columnDef.cell,
-                            cell.getContext()
-                          )}
-                        </Link>
+                        {flexRender(
+                          cell.column.columnDef.cell,
+                          cell.getContext()
+                        )}
                       </TableCell>
                     );
                   }
@@ -121,4 +133,4 @@ function MangaTable({ data }: DataTableProps) {
   );
 }
 
-export default MangaTable;
+export default ChapterTable;

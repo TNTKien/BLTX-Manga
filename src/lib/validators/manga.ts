@@ -14,25 +14,21 @@ export const tagInfo = z.object({
 export type tagInfoProps = z.infer<typeof tagInfo>;
 
 export const MangaUploadValidator = z.object({
-  cover: z
-    .string()
-    .optional()
-    .refine((value) => {
-      if (value) {
-        return (
-          value.startsWith("blob") ||
-          value.startsWith(process.env.NEXT_PUBLIC_IMG_DOMAIN!)
-        );
-      } else return true;
-    }, "Ảnh bìa không hợp lệ"),
-  image: z
-    .string()
-    .refine(
-      (value) =>
-        value.startsWith("blob") ||
-        value.startsWith(process.env.NEXT_PUBLIC_IMG_DOMAIN!),
-      "Ảnh không hợp lệ"
-    ),
+  //cover: z.string().optional(),
+  // .refine((value) => {
+  //   if (value) {
+  //     return (
+  //       value.startsWith("blob") ||
+  //       value.startsWith(process.env.NEXT_PUBLIC_IMG_DOMAIN!)
+  //     );
+  //   } else return true;
+  // }, "Ảnh bìa không hợp lệ"),
+  cover: z.string(),
+  // .refine(
+  //   (value) =>
+  //     value.startsWith("blob") || value.startsWith("http://localhost:3001/"),
+  //   "Ảnh không hợp lệ"
+  // ),
   title: z
     .string()
     .min(3, { message: "Tối thiểu 3 kí tự" })

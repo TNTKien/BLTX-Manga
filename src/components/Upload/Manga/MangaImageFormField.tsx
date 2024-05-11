@@ -13,19 +13,24 @@ import {
   FormLabel,
   FormMessage,
 } from "../../ui/Form";
+import { baseURL } from "@/utils/config";
 
 interface MangaImageFormFieldProps {
   form: UseFormReturn<MangaUploadPayload>;
+  exsistImage?: string;
 }
 
-const MangaImageFormField: FC<MangaImageFormFieldProps> = ({ form }) => {
+const MangaImageFormField: FC<MangaImageFormFieldProps> = ({
+  form,
+  exsistImage,
+}) => {
   const imageInputRef = useRef<HTMLInputElement>(null);
   const imageCropRef = useRef<HTMLButtonElement>(null);
 
   return (
     <FormField
       control={form.control}
-      name="image"
+      name="cover"
       render={({ field }) => (
         <FormItem>
           <FormLabel
@@ -37,7 +42,21 @@ const MangaImageFormField: FC<MangaImageFormFieldProps> = ({ form }) => {
           <FormMessage />
           <FormControl>
             <div className="relative" style={{ aspectRatio: 5 / 7 }}>
-              {!!field.value ? (
+              {!!exsistImage && !field.value ? (
+                <Image
+                  fill
+                  sizes="40vw"
+                  quality={40}
+                  priority
+                  src={baseURL + exsistImage}
+                  alt="Preview Image"
+                  className="rounded-md border-2 object-cover hover:cursor-pointer dark:border-zinc-800"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    imageInputRef.current?.click();
+                  }}
+                />
+              ) : !!field.value ? (
                 <Image
                   fill
                   sizes="40vw"

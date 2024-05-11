@@ -3,6 +3,7 @@ import { db } from "@/lib/db";
 import { notFound, redirect } from "next/navigation";
 import dynamic from "next/dynamic";
 import TableSkeleton from "@/components/Skeleton/TableSkeleton";
+import Link from "next/link";
 
 const MangaTable = dynamic(() => import("@/components/Table/Manga"), {
   ssr: false,
@@ -35,7 +36,16 @@ const page = async () => {
         {!!manga.length ? (
           <MangaTable data={manga} />
         ) : (
-          <p>Bạn chưa có manga nào. Hãy upload một bộ ngay thôi nhé</p>
+          <p>
+            Bạn chưa có manga nào. Hãy{" "}
+            <a
+              href="/manage/upload"
+              className="text-sky-500 underline decoration-sky-500"
+            >
+              upload
+            </a>{" "}
+            một bộ ngay thôi nhé!
+          </p>
         )}
       </section>
     </main>

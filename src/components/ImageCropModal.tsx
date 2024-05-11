@@ -227,17 +227,20 @@ const ImageCropModal = forwardRef<HTMLButtonElement, ImageCropModalProps>(
               />
             ) : null}
 
-            <div className="w-full flex items-center justify-end gap-6">
+            <div className="w-full flex items-center justify-end gap-3">
               <AlertDialogCancel
                 className={cn(
                   buttonVariants({ variant: "destructive" }),
-                  "bg-red-600 w-20"
+                  "hover:bg-red-500/25"
                 )}
               >
                 Hủy
               </AlertDialogCancel>
               <AlertDialogAction
-                className={cn(buttonVariants({ variant: "default" }), "w-20")}
+                className={cn(
+                  buttonVariants({ variant: "default" }),
+                  "w-20 hover:bg-primary-600/50"
+                )}
                 onClick={() => onDoneHandler()}
               >
                 Xong
