@@ -35,7 +35,7 @@ export const useCustomToast = () => {
       variant: "destructive",
     });
 
-  const successToast = () => toast({ title: "Thành công" });
+  const successToast = () => toast({ title: "Thành công ✅" });
 
   const verifyToast = () => {
     const { dismiss } = toast({

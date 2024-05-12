@@ -4,11 +4,16 @@ import { notFound, redirect } from "next/navigation";
 import dynamic from "next/dynamic";
 import TableSkeleton from "@/components/Skeleton/TableSkeleton";
 import Link from "next/link";
+import { Metadata } from "next";
 
 const MangaTable = dynamic(() => import("@/components/Table/Manga"), {
   ssr: false,
   loading: () => <TableSkeleton />,
 });
+
+export const metadata: Metadata = {
+  title: "Quản lý truyện",
+};
 
 const page = async () => {
   const session = await getAuthSession();
@@ -26,6 +31,10 @@ const page = async () => {
         id: true,
         title: true,
         updatedAt: true,
+        createdAt: true,
+      },
+      orderBy: {
+        updatedAt: "desc",
       },
     });
   if (!manga) return notFound();

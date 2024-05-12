@@ -24,17 +24,15 @@ import { Check } from "lucide-react";
 import type { ChapterColumn } from "./Column";
 import Link from "next/link";
 
-interface DataToolbarProps<TValue> {
-  column?: Column<ChapterColumn, TValue>;
-  table: Table<ChapterColumn>;
-}
+// interface DataToolbarProps {
+//   mangaId: string;
+// }
 
-function DataToolbar<TValue>({ column, table }: DataToolbarProps<TValue>) {
-  const statusValues = column?.getFilterValue();
-
+function DataToolbar() {
+  const mangaId = window.location.pathname.split("/")[3];
   return (
     <Link
-      href=""
+      href={`/manage/mangas/${mangaId}/chapters/upload`}
       className={cn(
         buttonVariants({
           variant: "default",

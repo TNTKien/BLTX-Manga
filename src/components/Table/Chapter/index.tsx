@@ -84,7 +84,7 @@ function ChapterTable({ data }: DataTableProps) {
           }
           className="rounded-lg bg-default-400/20 focus:bg-slate-50"
         />
-        <DataToolbar table={table} />
+        <DataToolbar />
       </div>
 
       <Table>

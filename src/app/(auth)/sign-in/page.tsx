@@ -8,8 +8,6 @@ import { redirect } from "next/navigation";
 
 export const metadata: Metadata = {
   title: "Đăng nhập",
-  description: "Đăng nhập | Moetruyen",
-  keywords: ["Đăng nhập", "Manga", "Moetruyen"],
 };
 
 const Page = async () => {

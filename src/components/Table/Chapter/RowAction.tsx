@@ -55,7 +55,6 @@ function DataTableRowAction({ row }: DataTableRowActionProps) {
   const { refresh } = useRouter();
 
   const [isOpen, setOpen] = useState(false);
-  console.log(isOpen);
 
   return (
     <>
@@ -83,7 +82,11 @@ function DataTableRowAction({ row }: DataTableRowActionProps) {
             Xem chapter
           </DropdownItem>
 
-          <DropdownItem key="edit" href={``} showDivider>
+          <DropdownItem
+            key="edit"
+            href={`/manage/mangas/${chapter.mangaId}/chapters/${chapter.id}/edit`}
+            showDivider
+          >
             Chỉnh sửa
           </DropdownItem>
           <DropdownItem

@@ -10,6 +10,7 @@ import { notFound, redirect } from "next/navigation";
 import { FC } from "react";
 import type { Manga, Chapter } from "@prisma/client";
 import axiosInstance from "@/lib/axios";
+import { Metadata } from "next";
 
 const ChapterTable = dynamic(() => import("@/components/Table/Chapter"), {
   ssr: false,
@@ -21,6 +22,10 @@ interface pageProps {
     mangaId: string;
   };
 }
+
+export const metadata: Metadata = {
+  title: "Quản lý Chapter",
+};
 
 async function getManga(mangaId: string) {
   const { data } = await axiosInstance.get(`/api/manga/${mangaId}`);
@@ -39,6 +44,7 @@ const page: FC<pageProps> = async ({ params }) => {
   if (!manga) return notFound();
 
   const chapters = await getChapters(params.mangaId);
+  chapters.reverse();
 
   return (
     <main className="container max-sm:px-2 mb-10">
@@ -61,7 +67,7 @@ const page: FC<pageProps> = async ({ params }) => {
               Bạn chưa có Chapter nào. Hãy upload Chapter ngay thôi nhé
             </p>
             <Link
-              href={`/chapters/${params.mangaId}/upload`}
+              href={`/manage/mangas/${params.mangaId}/chapters/upload`}
               className={cn(buttonVariants(), "space-x-2")}
             >
               <UploadCloud className="w-5 h-5" />

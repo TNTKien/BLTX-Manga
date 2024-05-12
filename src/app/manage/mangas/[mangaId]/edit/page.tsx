@@ -31,6 +31,9 @@ async function getManga(mangaId: string) {
   //console.log(data);
   return data.data as Manga;
 }
+export const metadata: Metadata = {
+  title: "Sửa truyện",
+};
 
 const page: FC<pageProps> = async ({ params }) => {
   const manga = await getManga(params.mangaId);

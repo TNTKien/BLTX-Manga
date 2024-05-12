@@ -261,8 +261,7 @@ export async function generateMetadata({
   const manga = await getManga(params.mangaId);
 
   return {
-    title: `${manga.title} - BLTX`,
-    description: `Đọc Manga ${manga.title} | BLTX`,
-    keywords: ["Manga", manga.title, "BLTX", "Bác Lệ Thần Xã"],
+    title: `${manga.title}`,
+    description: `Đọc Manga ${manga.title}`,
   };
 }
