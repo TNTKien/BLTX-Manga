@@ -11,14 +11,7 @@ import {
 import { cn } from "@/lib/utils";
 import { useClipboard } from "@mantine/hooks";
 import { Check, Copy, Facebook, Share2 } from "lucide-react";
-import {
-  FacebookShareButton,
-  RedditIcon,
-  RedditShareButton,
-  TelegramIcon,
-  TelegramShareButton,
-  TwitterShareButton,
-} from "next-share";
+import { FacebookShareButton, TwitterShareButton } from "next-share";
 import { FC } from "react";
 
 interface PostShareButtonProps extends React.HTMLAttributes<HTMLButtonElement> {
@@ -51,7 +44,7 @@ const ShareButton: FC<PostShareButtonProps> = ({
             <FacebookShareButton
               url={`${process.env.NEXT_PUBLIC_MAIN_URL}${url}`}
               quote={title}
-              hashtag="#Moetruyen"
+              hashtag="#MangaDex"
               blankTarget
             >
               <Facebook className="w-8 h-8" />
@@ -61,26 +54,11 @@ const ShareButton: FC<PostShareButtonProps> = ({
             <TwitterShareButton
               url={`${process.env.NEXT_PUBLIC_MAIN_URL}${url}`}
               title={title}
-              hashtags={["Moetruyen", `${title.split(" ").join("")}`]}
+              hashtags={[`${title.split(" ").join("")}`]}
               blankTarget
             >
               <Icons.twitterX className="w-8 h-8 dark:fill-white" />
             </TwitterShareButton>
-            {/* Telegram */}
-            <TelegramShareButton
-              url={`${process.env.NEXT_PUBLIC_MAIN_URL}${url}`}
-              title={title}
-              blankTarget
-            >
-              <TelegramIcon size={"2rem"} round />
-            </TelegramShareButton>
-            <RedditShareButton
-              url={`${process.env.NEXT_PUBLIC_MAIN_URL}${url}`}
-              title={title}
-              blankTarget
-            >
-              <RedditIcon size={"2rem"} round />
-            </RedditShareButton>
           </div>
 
           <div className="grid grid-cols-[1fr_.1fr] items-center gap-3">

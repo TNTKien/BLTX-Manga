@@ -69,10 +69,7 @@ const Top: FC<TopProps> = ({ href, title }) => {
               }
             )}
             onClick={() => setCommentToggle((prev) => !prev)}
-          >
-            {/* <MessageSquare />
-            <span className="max-sm:hidden">Bình luận</span> */}
-          </button>
+          ></button>
 
           <button
             aria-label="menu button"

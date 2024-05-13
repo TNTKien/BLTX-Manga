@@ -1,7 +1,6 @@
 import TableSkeleton from "@/components/Skeleton/TableSkeleton";
 import { buttonVariants } from "@/components/ui/Button";
 import { getAuthSession } from "@/lib/auth";
-import { db } from "@/lib/db";
 import { cn } from "@/lib/utils";
 import { ArrowLeft, UploadCloud } from "lucide-react";
 import dynamic from "next/dynamic";

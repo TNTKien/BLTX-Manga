@@ -1,4 +1,3 @@
-import CommentSkeleton from "@/components/Skeleton/CommentSkeleton";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/Tabs";
 import type { Manga } from "@prisma/client";
 import { ChevronDown, List, ListTree, MessagesSquare } from "lucide-react";
@@ -9,11 +8,6 @@ import NormalSkeleton from "../../Skeleton/NormalSkeleton";
 const Normal = dynamic(() => import("./Normal"), {
   loading: () => <NormalSkeleton />,
 });
-
-//   const Comments = dynamic(() => import('@/components/Comment/Manga'), {
-//     ssr: false,
-//     loading: () => <CommentSkeleton />,
-//   });
 
 interface ChapterListProps {
   manga: Pick<Manga, "id">;
@@ -48,9 +42,7 @@ const ChapterList: FC<ChapterListProps> = async ({ manga }) => {
         value="comment"
         forceMount
         className='data-[state="inactive"]:hidden space-y-12'
-      >
-        {/* <Comments id={manga.id} session={session} /> */}
-      </TabsContent>
+      ></TabsContent>
     </Tabs>
   );
 };

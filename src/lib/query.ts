@@ -26,20 +26,6 @@ export type SearchUserResult = {
   color: string;
 };
 
-// export const searchUser = ({
-//   searchPhrase,
-//   take,
-//   skip = 0,
-// }: {
-//   searchPhrase: string;
-//   take: number;
-//   skip?: number;
-// }): Promise<SearchUserResult[]> => {
-//   const query = generateSearchPhrase(searchPhrase);
-
-//   return db.$queryRaw`SELECT "name", "image", "color" FROM "User" WHERE to_tsvector('english', "name") @@ to_tsquery(${query}) LIMIT ${take} OFFSET ${skip}`;
-// };
-
 export const countFTResult = async (
   searchPhrase: string,
   type: "Manga" | "User"

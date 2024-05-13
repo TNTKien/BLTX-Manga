@@ -1,15 +1,3 @@
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-} from "@/components/ui/AlertDialog";
-import { Input } from "@/components/ui/Input";
-import { getMimeType } from "@/lib/utils";
 import classes from "@/styles/mantine/dropzone.module.css";
 import { Dropzone } from "@mantine/dropzone";
 import "@mantine/dropzone/styles.layer.css";
@@ -73,27 +61,6 @@ const ChapterImageInput = forwardRef<HTMLInputElement, ChapterImageInputProps>(
           }
 
           setImages((prev) => [...prev, ...arr]);
-        } else {
-          const file = files[0];
-
-          //   if (file.type === "application/zip") {
-          //     ZipExtractor(file)
-          //       .then((result) => !!result.length && setImages(result))
-          //       .catch();
-          //   }
-
-          //   if (file.type === "application/vnd.rar") {
-          //     RarExtractor(file, password)
-          //       .then((result) => !!result?.length && setImages(result))
-          //       .catch((error) => {
-          //         if (error instanceof Error) {
-          //           if (error.message === ErrorEnum.PASSWORD_REQUIRED)
-          //             setIsPasswordRequire({ state: true, isWrongPass: false });
-          //           if (error.message === ErrorEnum.WRONG_PASSWORD)
-          //             setIsPasswordRequire({ state: true, isWrongPass: true });
-          //         }
-          //       });
-          //   }
         }
       },
       [password, setImages, type]
@@ -180,79 +147,3 @@ const ChapterImageInput = forwardRef<HTMLInputElement, ChapterImageInputProps>(
 ChapterImageInput.displayName = "ChapterImageInput";
 
 export default ChapterImageInput;
-
-// const RarExtractor = async (file: File, password: string) => {
-//   const [wasmBinary, fileBuffer] = await Promise.all([
-//     fetch(`/_next/static/public/unrar.wasm`, {
-//       credentials: "same-origin",
-//       cache: "force-cache",
-//     }),
-//     await file.arrayBuffer(),
-//   ]);
-//   if (!wasmBinary.ok || wasmBinary.status >= 300) return;
-
-//   //   try {
-//   //     const extractor = await createExtractorFromData({
-//   //       wasmBinary: await wasmBinary.arrayBuffer(),
-//   //       data: fileBuffer,
-//   //       password,
-//   //     });
-
-//   //     const { files } = extractor.extract({
-//   //       files: (fileHeader) => {
-//   //         return fileHeader.unpSize < 4 * 1000 * 1000;
-//   //       },
-//   //     });
-
-//   //     let arr: { src: string; name: string }[] = [];
-//   //     // @ts-ignore
-//   //     for (const f of files) {
-//   //       const type = getMimeType(f.extraction);
-
-//   //       if (["image/png", "image/jpeg"].includes(type))
-//   //         arr.push({
-//   //           src: URL.createObjectURL(new Blob([f.extraction], { type })),
-//   //           name: f.fileHeader.name,
-//   //         });
-//   //     }
-
-//   //     return arr;
-//   //   } catch (error) {
-//   //     if (error instanceof UnrarError) {
-//   //       if (error.reason === "ERAR_MISSING_PASSWORD")
-//   //         throw Error(ErrorEnum.PASSWORD_REQUIRED);
-//   //       if (error.reason === "ERAR_BAD_PASSWORD")
-//   //         throw Error(ErrorEnum.WRONG_PASSWORD);
-//   //     }
-//   //   }
-// };
-
-// const ZipExtractor = async (file: File) => {
-//   const jszip = (await import("jszip")).default;
-
-//   try {
-//     const zippedFiles = Object.values((await jszip.loadAsync(file)).files);
-
-//     return (
-//       await Promise.all(
-//         zippedFiles
-//           .sort((a, b) => a.date.getTime() - b.date.getTime())
-//           .map(async (zippedFile) => {
-//             const blob = await zippedFile.async("blob");
-//             if (blob.size > 4 * 1000 * 1000) return;
-
-//             return {
-//               src: URL.createObjectURL(
-//                 new Blob([blob], {
-//                   type: `image/${zippedFile.name.split(".").pop() ?? "jpeg"}`,
-//                 })
-//               ),
-//               name: zippedFile.name,
-//             };
-//           })
-//       )
-//     ).filter(Boolean) as ImageType[];
-//   } catch (error) {
-//     throw error;
-//   }
-// };

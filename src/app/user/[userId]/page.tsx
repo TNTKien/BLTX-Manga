@@ -1,10 +1,8 @@
 import UserAvatar from "@/components/User/UserAvatar";
 import UserBanner from "@/components/User/UserBanner";
 import Username from "@/components/User/Username";
-import { getAuthSession } from "@/lib/auth";
+//import { getAuthSession } from "@/lib/auth";
 import { db } from "@/lib/db";
-import Link from "next/link";
-import MangaImage from "@/components/Manga/components/MangaImage";
 import MangaCard from "@/components/Manga/components/MangaCard";
 import {
   Accordion,
@@ -12,11 +10,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/Accordion";
-import format from "date-fns/format";
-import vi from "date-fns/locale/vi";
-import { Users2, Wifi } from "lucide-react";
 import type { Metadata } from "next";
-import dynamic from "next/dynamic";
 import { notFound } from "next/navigation";
 import { FC } from "react";
 
@@ -60,7 +54,7 @@ export async function generateMetadata({
 
 const page: FC<pageProps> = async ({ params }) => {
   try {
-    const session = await getAuthSession();
+    // const session = await getAuthSession();
     const user = await db.user.findUnique({
       where: {
         id: params.userId,
@@ -82,7 +76,6 @@ const page: FC<pageProps> = async ({ params }) => {
     });
 
     if (!user) return notFound();
-    //console.log(user.manga);
 
     return (
       <>
@@ -96,10 +89,6 @@ const page: FC<pageProps> = async ({ params }) => {
             user={user}
             className="absolute w-24 h-24 md:w-40 md:h-40 bottom-0 left-4 translate-y-1/2 border-4 bg-muted border-primary-foreground"
           />
-          {/* <Username
-          user={user}
-          className="text-start text-3xl font-semibold ml-48"
-        /> */}
         </div>
 
         <div className="mt-16 lg:mt-20 p-4 rounded-md dark:bg-zinc-800">
@@ -107,22 +96,7 @@ const page: FC<pageProps> = async ({ params }) => {
 
           <hr className="h-0.5 rounded-full dark:bg-zinc-50 my-4" />
 
-          {/* <div className="flex flex-wrap justify-between items-center gap-2">
-         
-
-          
-        </div> */}
-
           <hr className="h-0.5 rounded-full dark:bg-zinc-50 my-4" />
-
-          {/* <div className="flex flex-wrap justify-between items-center gap-2">
-          <dl className="flex items-center gap-1.5">
-            <dt>Truyện đã đăng: </dt>
-            <dd>{user._count.manga}</dd>
-          </dl>
-        </div>
-
-        <hr className="h-0.5 rounded-full dark:bg-zinc-50 my-4" /> */}
 
           <Accordion type="multiple" defaultValue={["chapter"]}>
             <AccordionItem value="chapter">
@@ -136,15 +110,6 @@ const page: FC<pageProps> = async ({ params }) => {
               </AccordionContent>
             </AccordionItem>
           </Accordion>
-
-          {/* <dl className="flex items-center gap-1.5">
-          <dt>Gia nhập:</dt>
-          <dd>
-            <time dateTime={user.createdAt.toDateString()}>
-              {format(new Date(user.createdAt), "d MMM y", { locale: vi })}
-            </time>
-          </dd>
-        </dl> */}
         </div>
       </>
     );

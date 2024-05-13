@@ -5,7 +5,6 @@ import classes from "@/styles/chapter/bottom.module.css";
 import { useMediaQuery } from "@mantine/hooks";
 import * as Slider from "@radix-ui/react-slider";
 import { type EmblaCarouselType as CarouselApi } from "embla-carousel";
-//import type { EmblaCarouselType } from 'embla-carousel-react';
 import { useSearchParams } from "next/navigation";
 import {
   memo,
@@ -37,7 +36,7 @@ const Bottom: FC<BottomProps> = ({ embla, chapterId, totalImages }) => {
   const setShowInfo = useContext(InfoToggleDispatchContext);
   const layout = useContext(LayoutValueContext);
   const direction = useContext(DirectionValueContext);
-  const { calcView } = useViewCalc(chapterId, totalImages);
+  const { calcView } = useViewCalc(chapterId, totalImages, chapterId);
 
   const searchParams = useSearchParams();
   const [currentPage, setCurrentPage] = useState(1);

@@ -4,9 +4,7 @@ import type {
   MangaUploadPayload,
   authorInfoProps,
 } from "@/lib/validators/manga";
-import { useDebouncedValue } from "@mantine/hooks";
-import { X } from "lucide-react";
-import { FC, useEffect, useState } from "react";
+import { FC } from "react";
 import type { UseFormReturn } from "react-hook-form";
 import {
   FormControl,
@@ -23,13 +21,6 @@ interface MangaAuthorFormProps {
 }
 
 const MangaAuthorForm: FC<MangaAuthorFormProps> = ({ form, existAuthors }) => {
-  const [authorInput, setAuthorInput] = useState("");
-  const [debouncedValue] = useDebouncedValue(authorInput, 300);
-  const [authorSelected, setAuthorSelected] = useState<authorInfoProps[]>(
-    existAuthors ?? []
-  );
-  const [authorsResult, setAuthorsResult] = useState<authorInfoProps[]>([]);
-
   return (
     <FormField
       control={form.control}

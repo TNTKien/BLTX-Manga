@@ -1,25 +1,6 @@
 "use client";
 
-import { Button } from "@/components/ui/Button";
-import {
-  Command,
-  CommandGroup,
-  CommandItem,
-  CommandList,
-} from "@/components/ui/Command";
-import {
-  DropdownMenu,
-  DropdownMenuCheckboxItem,
-  DropdownMenuContent,
-  DropdownMenuTrigger,
-} from "@/components/ui/DropdownMenu";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/Popover";
 import type { Column, Table } from "@tanstack/react-table";
-import { Check } from "lucide-react";
 import type { MangaColumn } from "./Column";
 import Link from "next/link";
 import { buttonVariants } from "@/components/ui/Button";
@@ -31,7 +12,7 @@ interface DataToolbarProps<TValue> {
 }
 
 function DataToolbar<TValue>({ column, table }: DataToolbarProps<TValue>) {
-  const statusValues = column?.getFilterValue();
+  //const statusValues = column?.getFilterValue();
 
   return (
     <Link

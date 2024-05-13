@@ -1,12 +1,10 @@
 "use server";
 
-import { db } from "@/lib/db";
 import { limiter } from "@/lib/rate-limit";
 import { requestIp } from "@/lib/request-ip";
 import { headers } from "next/headers";
 import type { Chapter } from "@prisma/client";
 import axiosInstance from "@/lib/axios";
-import axios from "axios";
 
 async function getChapter(chapterId: string, mangaId: string) {
   const { data } = await axiosInstance.get(

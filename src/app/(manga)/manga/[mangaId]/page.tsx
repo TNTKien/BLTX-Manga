@@ -1,5 +1,4 @@
 import MangaImage from "@/components/Manga/components/MangaImage";
-import MangaInfo from "@/components/Manga/components/MangaInfo";
 import ChapterList from "@/components/Chapter/ChapterList";
 import { TagWrapper } from "@/components/ui/Tag";
 import {
@@ -18,14 +17,7 @@ import { notFound } from "next/navigation";
 import { FC } from "react";
 import axiosInstance from "@/lib/axios";
 import { baseURL } from "@/utils/config";
-import FacebookEmbed from "@/components/FacebookEmbed";
-import DiscordEmbed from "@/components/DiscordEmbed";
-// const MangaSubInfo = dynamic(
-//     () => import('@/components/Manga/components/MangaSubInfo'),
-//     {
-//       loading: () => <MangaSubInfoSkeleton />,
-//     }
-//   );
+import MangaCard from "@/components/Manga/components/MangaCard";
 const MangaAction = dynamic(() => import("@/components/Manga/MangaAction"), {
   loading: () => (
     <div className="w-36 md:w-[11.5rem] lg:w-[13.5rem] h-10 rounded-md animate-pulse bg-background" />
@@ -39,9 +31,12 @@ interface pageProps {
 }
 
 async function getManga(mangaId: string) {
-  const { data } = await axiosInstance.get(`/api/manga/${mangaId}`);
-  //console.log(data);
-  return data.data as Manga;
+  try {
+    const { data } = await axiosInstance.get(`/api/manga/${mangaId}`);
+    return data.data as Manga;
+  } catch (error) {
+    return null;
+  }
 }
 
 const page: FC<pageProps> = async ({ params }) => {
@@ -49,7 +44,7 @@ const page: FC<pageProps> = async ({ params }) => {
   if (!manga) return notFound();
 
   const otherMangas = await db.manga.findMany({
-    take: 4,
+    take: 6,
     where: {
       userId: manga.userId,
       id: {
@@ -63,6 +58,8 @@ const page: FC<pageProps> = async ({ params }) => {
       id: true,
       title: true,
       cover: true,
+      description: true,
+      createdAt: true,
     },
   });
 
@@ -114,17 +111,9 @@ const page: FC<pageProps> = async ({ params }) => {
             <div className="flex flex-wrap items-start gap-2">
               <MangaAction manga={manga} />
             </div>
-
-            {/* <MangaSubInfo mangaId={manga.id} /> */}
           </div>
         </section>
 
-        {/* Action section */}
-        {/* <section className="-mt-14 md:-mt-24 lg:-mt-[6.5rem] px-2 mx-1 md:px-6 md:mx-9 flex flex-wrap items-center gap-5">
-                    <MangaAction manga={manga} />
-                </section> */}
-
-        {/* Info section */}
         <section className="mx-1 md:px-4 md:mx-9 -mt-20 space-y-8">
           <div className="p-3 rounded-md md:bg-primary-foreground/95 space-y-2 h-fit">
             {/* <MangaInfo manga={manga} /> */}
@@ -133,12 +122,9 @@ const page: FC<pageProps> = async ({ params }) => {
               <TagWrapper className="px-2">
                 {manga.tags.map((tag, i) => (
                   <li key={i}>
-                    <Link
-                      href={`/advanced-search?include=${tag}`}
-                      className="block p-0.5 rounded-md font-medium text-[.75rem] bg-red-300 text-primary-foreground"
-                    >
+                    <div className="block p-0.5 rounded-md font-medium text-[.75rem] bg-red-300 text-primary-foreground">
                       {tag.replace(/_/g, " ")}
-                    </Link>
+                    </div>
                   </li>
                 ))}
               </TagWrapper>
@@ -158,12 +144,6 @@ const page: FC<pageProps> = async ({ params }) => {
           </div>
         </section>
 
-        {/* <section className="mx-1 md:px-4 md:mx-9">
-          <div className="p-2 md:p-4 rounded-lg bg-primary-foreground/95">
-            <ChapterList manga={manga} />
-          </div>
-        </section> */}
-
         <section className="mx-1 md:px-4 md:mx-9 space-y-8">
           <div className="p-2 rounded-md md:bg-primary-foreground/95">
             <Accordion type="multiple" defaultValue={["chapter"]}>
@@ -182,70 +162,32 @@ const page: FC<pageProps> = async ({ params }) => {
                 <AccordionItem value="other">
                   <AccordionTrigger>Cùng người đăng</AccordionTrigger>
                   <AccordionContent asChild>
-                    <ul className="space-y-3 grid grid-cols-1 md:grid-cols-2 gap-2">
+                    <ul className="grid grid-cols-1 md:grid-cols-3 gap-3">
                       {otherMangas.map((otherManga) => (
                         <li key={otherManga.id}>
-                          <Link
-                            href={`/manga/${otherManga.id}`}
-                            className="grid grid-cols-[.3fr_1fr] gap-3 transition-colors rounded-md"
-                          >
-                            <MangaImage
-                              manga={otherManga}
-                              sizes="(max-width: 640px) 22vw, 10vw"
-                              className="transition-transform"
-                            />
-
-                            <div className="space-y-0.5">
-                              <p className="text-lg font-semibold">
-                                {otherManga.title}
-                              </p>
-                              {/* <p className="line-clamp-3">
-                    {otherManga.review}
-                  </p> */}
-                            </div>
-                          </Link>
+                          <MangaCard key={otherManga.id} manga={otherManga} />
                         </li>
                       ))}
                     </ul>
                   </AccordionContent>
                 </AccordionItem>
               )}
-
-              {/* <AccordionItem value="facebook">
-                <AccordionTrigger>Facebook</AccordionTrigger>
-                <AccordionContent>
-                  <FacebookEmbed
-                    facebookLink={
-                      "https://www.facebook.com/williams.taylorethan"
-                    }
-                  />
-                </AccordionContent>
-              </AccordionItem>
-
-              <AccordionItem value="discord">
-                <AccordionTrigger>Discord</AccordionTrigger>
-                <AccordionContent>
-                  <DiscordEmbed discordLink={"https://discord.gg/hvn"} />
-                </AccordionContent>
-              </AccordionItem> */}
             </Accordion>
           </div>
         </section>
-
-        {/* Chapter section */}
       </main>
     </>
   );
 };
 export default page;
 
-function generateJsonLd(manga: Pick<Manga, "title" | "cover">, slug: string) {
+function generateJsonLd(manga: Pick<Manga, "title" | "cover">, id: string) {
   return {
     "@context": "https://schema.org",
     "@type": "Article",
-    mainEntityOfPage: `${process.env.NEXTAUTH_URL}/manga/${slug}`,
+    mainEntityOfPage: `${process.env.NEXTAUTH_URL}/manga/${id}`,
     headline: `${manga.title}`,
-    description: `Đọc ${manga.title} | BLTX`,
+    description: `Đọc ${manga.title}`,
     image: {
       "@type": "ImageObject",
       url: `${manga.cover}`,
@@ -259,7 +201,10 @@ export async function generateMetadata({
   params,
 }: pageProps): Promise<Metadata> {
   const manga = await getManga(params.mangaId);
-
+  if (!manga)
+    return {
+      title: "404 Not Found",
+    };
   return {
     title: `${manga.title}`,
     description: `Đọc Manga ${manga.title}`,

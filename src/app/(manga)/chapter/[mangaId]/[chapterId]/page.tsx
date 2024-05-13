@@ -1,5 +1,3 @@
-// import { getAuthSession } from '@/lib/auth';
-import { db } from "@/lib/db";
 import type { Chapter, Manga } from "@prisma/client";
 import dynamic from "next/dynamic";
 import type { FC } from "react";
@@ -19,20 +17,32 @@ interface pageProps {
 }
 
 async function getChapter(managId: string, chapterId: string) {
-  const { data } = await axiosInstance.get(
-    `/api/chapter/${managId}/${chapterId}`
-  );
-  return data.data as Chapter;
+  try {
+    const { data } = await axiosInstance.get(
+      `/api/chapter/${managId}/${chapterId}`
+    );
+    return data.data as Chapter;
+  } catch (error) {
+    return null;
+  }
 }
 
 async function getChapterList(mangaId: string) {
-  const { data } = await axiosInstance.get(`/api/chapter/${mangaId}`);
-  return data.data as Chapter[];
+  try {
+    const { data } = await axiosInstance.get(`/api/chapter/${mangaId}`);
+    return data.data as Chapter[];
+  } catch (error) {
+    return null;
+  }
 }
 
 async function getManga(mangaId: string) {
-  const { data } = await axiosInstance.get(`/api/manga/${mangaId}`);
-  return data.data as Manga;
+  try {
+    const { data } = await axiosInstance.get(`/api/manga/${mangaId}`);
+    return data.data as Manga;
+  } catch (error) {
+    return null;
+  }
 }
 
 const page: FC<pageProps> = async ({ params }) => {
@@ -40,6 +50,7 @@ const page: FC<pageProps> = async ({ params }) => {
   if (!chapter) return notFound();
 
   const chapterList = await getChapterList(params.mangaId);
+  if (!chapterList) return notFound();
 
   const navChapter = getNavChapter(chapter.id, chapterList);
 
@@ -55,7 +66,7 @@ const page: FC<pageProps> = async ({ params }) => {
       mangaId: chapter.mangaId,
     })),
   };
-  //console.log(chapterArgs);
+
   return (
     <main className="relative h-[100dvh] bg-background space-y-3">
       <Reader
@@ -93,6 +104,10 @@ export async function generateMetadata({
     };
 
   const manga = await getManga(params.mangaId);
+  if (!manga)
+    return {
+      title: `Đọc truyện ${params.mangaId}`,
+    };
 
   const title = `${!!chapter.title ? `${chapter.title}` : ""} - ${manga.title}`;
   const description = `Đọc truyện ${manga.title} ${chapter.title}.`;
@@ -109,101 +124,3 @@ export async function generateMetadata({
     },
   };
 }
-
-// const updateHistory = (mangaId: string, chapterId: string) =>
-//   getAuthSession().then(async (session) => {
-//     if (!session) return;
-
-//     return await db.history.upsert({
-//       where: {
-//         userId_mangaId: {
-//           userId: session.user.id,
-//           mangaId,
-//         },
-//       },
-//       update: {
-//         chapterId,
-//         createdAt: new Date(),
-//       },
-//       create: {
-//         userId: session.user.id,
-//         mangaId,
-//         chapterId,
-//       },
-//     });
-//   });
-
-// export async function generateMetadata({
-//   params,
-// }: pageProps): Promise<Metadata> {
-//   const chapter = await db.chapter.findUnique({
-//     where: {
-//       id: +params.id,
-//       isPublished: true,
-//     },
-//     select: {
-//       volume: true,
-//       chapterIndex: true,
-//       name: true,
-//       manga: {
-//         select: {
-//           image: true,
-//           name: true,
-//         },
-//       },
-//     },
-//   });
-
-//   if (!chapter)
-//     return {
-//       title: `Đọc truyện ${params.id}`,
-//     };
-
-//   const title = `Vol. ${chapter.volume} Ch. ${chapter.chapterIndex}${
-//     !!chapter.name ? ` - ${chapter.name}` : ""
-//   }. Truyện ${chapter.manga.name} | Tiếp Chap ${chapter.chapterIndex + 1}`;
-//   const description = `Đọc truyện ${chapter.manga.name} Chap ${chapter.chapterIndex}.`;
-
-//   return {
-//     title: {
-//       absolute: title,
-//       default: title,
-//     },
-//     description,
-//     keywords: [
-//       "Chapter",
-//       "Manga",
-//       "Truyện tranh",
-//       "Moetruyen",
-//       chapter.manga.name,
-//     ],
-//     alternates: {
-//       canonical: `${process.env.NEXTAUTH_URL}/chapter/${params.id}`,
-//     },
-//     openGraph: {
-//       url: `${process.env.NEXTAUTH_URL}/chapter/${params.id}`,
-//       siteName: "Moetruyen",
-//       title,
-//       description,
-//       locale: "vi_VN",
-//       images: [
-//         {
-//           url: chapter.manga.image,
-//           alt: `Ảnh bìa ${chapter.manga.name}`,
-//         },
-//       ],
-//     },
-//     twitter: {
-//       site: "Moetruyen",
-//       title,
-//       description,
-//       card: "summary_large_image",
-//       images: [
-//         {
-//           url: chapter.manga.image,
-//           alt: `Ảnh bìa ${chapter.manga.image}`,
-//         },
-//       ],
-//     },
-//   };
-// }

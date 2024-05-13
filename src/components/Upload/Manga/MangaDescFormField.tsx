@@ -5,7 +5,6 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/Form";
-import { Input } from "@/components/ui/Input";
 import type { MangaUploadPayload } from "@/lib/validators/manga";
 import { FC } from "react";
 import { UseFormReturn } from "react-hook-form";

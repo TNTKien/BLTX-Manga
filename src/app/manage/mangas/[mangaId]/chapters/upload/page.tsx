@@ -1,6 +1,5 @@
 import ChapterUploadSkeleton from "@/components/Skeleton/ChapterUploadSkeleton";
 import { getAuthSession } from "@/lib/auth";
-import { db } from "@/lib/db";
 import dynamic from "next/dynamic";
 import { notFound, redirect } from "next/navigation";
 import { FC } from "react";

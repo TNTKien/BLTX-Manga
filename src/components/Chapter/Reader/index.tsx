@@ -4,7 +4,7 @@ import { useDirectionReader } from "@/hooks/use-direction-reader";
 import { useLayoutReader } from "@/hooks/use-layout-reader";
 import { useNavChapter } from "@/hooks/use-nav-chapter";
 import { useHotkeys, usePrevious } from "@mantine/hooks";
-import type { Chapter, Manga } from "@prisma/client";
+import type { Chapter } from "@prisma/client";
 import useEmblaCarousel from "embla-carousel-react";
 import { WheelGesturesPlugin } from "embla-carousel-wheel-gestures";
 import dynamic from "next/dynamic";
@@ -14,7 +14,6 @@ import Viewer from "./Viewer";
 
 const Top = dynamic(() => import("./Top"), { ssr: false });
 const Bottom = dynamic(() => import("./Bottom"), { ssr: false });
-// const Comment = dynamic(() => import('./Comment'), { ssr: false });
 const Menu = dynamic(() => import("./Menu"), { ssr: false });
 
 interface ReaderProps {
@@ -225,7 +224,6 @@ const Reader: FC<ReaderProps> = ({ prevChapter, nextChapter, chapter }) => {
           }
           hasNextChapter={!!nextChapter}
         />
-        {/* <Comment chapterId={chapter.id} /> */}
         <Menu
           chapterId={chapter.id}
           title={`${!!chapter.title ? `${chapter.title}` : ""}`}

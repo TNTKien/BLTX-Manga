@@ -15,8 +15,6 @@ import {
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import dynamic from "next/dynamic";
-import Link from "next/link";
 import { useState } from "react";
 import TableDataHeader from "../TableHeader";
 import TablePagination from "../TablePagination";

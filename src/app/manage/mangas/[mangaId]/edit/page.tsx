@@ -1,23 +1,8 @@
-import MangaImage from "@/components/Manga/components/MangaImage";
-import MangaInfo from "@/components/Manga/components/MangaInfo";
-import ChapterList from "@/components/Chapter/ChapterList";
-import { TagWrapper } from "@/components/ui/Tag";
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/components/ui/Accordion";
-import { db } from "@/lib/db";
 import type { Manga } from "@prisma/client";
 import type { Metadata } from "next";
-import dynamic from "next/dynamic";
-import Image from "next/image";
-import Link from "next/link";
 import { notFound } from "next/navigation";
 import { FC } from "react";
 import axiosInstance from "@/lib/axios";
-import { baseURL } from "@/utils/config";
 import EditManga from "@/components/Upload/Manga/EditManga";
 
 interface pageProps {

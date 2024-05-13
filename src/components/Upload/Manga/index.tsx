@@ -1,14 +1,12 @@
 "use client";
 
 import MangaAuthorSkeleton from "@/components/Skeleton/MangaAuthorSkeleton";
-import MangaCoverSkeleton from "@/components/Skeleton/MangaCoverSkeleton";
 import MangaImageSkeleton from "@/components/Skeleton/MangaImageSkeleton";
 import MangaTagSkeleton from "@/components/Skeleton/MangaTagSkeleton";
 import { Button } from "@/components/ui/Button";
 import { Form } from "@/components/ui/Form";
 import { useCustomToast } from "@/hooks/use-custom-toast";
 import { toast } from "@/hooks/use-toast";
-import { Tags } from "@/lib/query";
 import {
   MangaUploadPayload,
   MangaUploadValidator,
@@ -20,13 +18,8 @@ import axios, { AxiosError } from "axios";
 import dynamic from "next/dynamic";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
-//import MangaAltNameForm from "./MangaAltNameFormField";
 import MangaDescForm from "./MangaDescFormField";
-// import MangaDiscForm from "./MangaDiscFormField";
-// import MangaFBForm from "./MangaFBFormField";
 import MangaNameForm from "./MangaNameFormField";
-// import MangaReviewForm from "./MangaReviewFormField";
-// import MangaSlugForm from "./MangaSlugFormField";
 
 import axiosInstance from "@/lib/axios";
 
@@ -157,16 +150,6 @@ const MangaUpload = () => {
               <MangaDescForm form={form} />
             </div>
           </div>
-
-          {/* <MangaImageForm form={form} />
-
-          <MangaNameForm form={form} />
-
-          <MangaAuthorForm form={form} />
-
-          <MangaTagForm form={form} />
-
-          <MangaDescForm form={form} /> */}
 
           <div className="flex flex-wrap justify-end items-center gap-2">
             <Button

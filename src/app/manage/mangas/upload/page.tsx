@@ -1,7 +1,5 @@
-import MangaUploadRules from "@/components/Rules/MangaUploadRules";
 import MangaUploadSkeleton from "@/components/Skeleton/MangaUploadSkeleton";
 import { Metadata } from "next";
-// import { tagGroupByCategory } from '@/lib/query';
 import dynamic from "next/dynamic";
 
 const MangaUpload = dynamic(() => import("@/components/Upload/Manga"), {

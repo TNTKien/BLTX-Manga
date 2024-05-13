@@ -13,7 +13,6 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/Popover";
-import { Switch } from "@/components/ui/Switch";
 import type { DirectionType } from "@/hooks/use-direction-reader";
 import type { LayoutType } from "@/hooks/use-layout-reader";
 import { cn } from "@/lib/utils";
@@ -97,8 +96,8 @@ const Menu: FC<MenuProps> = ({
   const setLayout = useContext(LayoutDispatchContext);
   const direction = useContext(DirectionValueContext);
   const setDirection = useContext(DirectionDispatchContext);
-  const isContinuosEnabled = useContext(ContinuousValueContext);
-  const setContinuous = useContext(ContinuousDispatchContext);
+  // const isContinuosEnabled = useContext(ContinuousValueContext);
+  // const setContinuous = useContext(ContinuousDispatchContext);
 
   const { toggle, fullscreen } = useFullscreen();
   const [value, setValue] = useState(
@@ -160,8 +159,6 @@ const Menu: FC<MenuProps> = ({
             </PopoverTrigger>
             <PopoverContent className="p-0.5 bg-slate-200">
               <Command>
-                {/* <CommandInput placeholder="Chapter" />
-                <CommandEmpty>Không tìm thấy Chapter</CommandEmpty> */}
                 <CommandGroup className="max-h-72 overflow-y-auto md:scrollbar md:dark:scrollbar--dark">
                   {chapterList.map((chapter, index) => (
                     <CommandItem

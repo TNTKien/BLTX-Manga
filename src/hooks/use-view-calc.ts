@@ -7,7 +7,11 @@ import { useCallback, useEffect, useRef, useState } from "react";
 const MAXIUM_PAGE = 10;
 const MIN_TIME = 25;
 
-const useViewCalc = (chapterId: string, totalImages: number) => {
+const useViewCalc = (
+  chapterId: string,
+  totalImages: number,
+  mangaId: string
+) => {
   const [seconds, setSeconds] = useState(0);
   const interval = useInterval(() => setSeconds((s) => s + 1), 1000);
   const threshold = useRef(
@@ -31,7 +35,8 @@ const useViewCalc = (chapterId: string, totalImages: number) => {
           chapterId,
           new Date(
             new Date().toLocaleString("en-US", { timeZone: "Asia/Ho_Chi_Minh" })
-          ).getTime()
+          ).getTime(),
+          mangaId
         ),
       0
     );

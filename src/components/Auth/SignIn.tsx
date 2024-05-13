@@ -19,10 +19,6 @@ const SignIn = ({
 
   return (
     <div className={cn("container flex flex-col gap-8", className)} {...props}>
-      {/* <h1 className="text-center text-2xl font-semibold">
-        Đăng nhập tài khoản
-      </h1> */}
-
       <div className="space-y-4">
         <div className="space-y-4">
           <UserSignInForm />

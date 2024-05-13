@@ -133,13 +133,8 @@ const EditManga: FC<EditMangaProps> = ({ manga }) => {
     const payload: MangaUploadPayload = {
       ...values,
       description: values.description ?? manga.description,
-      // cover:
-      //   values.cover.replace(baseURL, "") ?? manga.cover.replace(baseURL, ""),
     };
-    //console.log(payload);
     Update(payload);
-
-    // Update(values);
   };
 
   return (

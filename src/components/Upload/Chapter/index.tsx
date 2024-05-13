@@ -51,12 +51,6 @@ const ChapterUpload = ({ id }: { id: string }) => {
         form.append("pages", blob, i.toString());
       }
 
-      //   pages.forEach(async (img, index) => {
-      //     const blob = await fetch(img.src).then((res) => res.blob());
-      //     form.append("pages", blob, index.toString());
-      //   });
-      //   await Promise.all(promises);
-
       !!title && form.append("title", title);
 
       await axiosInstance.post(`/api/chapter/${id}`, form, {

@@ -1,21 +1,4 @@
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from "@/components/ui/AlertDialog";
 import { buttonVariants } from "@/components/ui/Button";
-// import {
-//   DropdownMenu,
-//   DropdownMenuContent,
-//   DropdownMenuItem,
-//   DropdownMenuTrigger,
-// } from "@/components/ui/DropdownMenu";
 import { useCustomToast } from "@/hooks/use-custom-toast";
 import { toast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
@@ -26,11 +9,8 @@ import {
   DropdownItem,
 } from "@nextui-org/react";
 import type { Manga } from "@prisma/client";
-import { useMutation } from "@tanstack/react-query";
 import type { Row } from "@tanstack/react-table";
-import axios, { AxiosError } from "axios";
 import { Loader2, MoreHorizontal } from "lucide-react";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 import axiosInstance from "@/lib/axios";
 import {
@@ -116,11 +96,6 @@ function DataTableRowAction({ row }: DataTableRowActionProps) {
           <ModalHeader className="flex flex-col gap-1">
             Bạn có chắc chắn muốn xóa truyện này không?
           </ModalHeader>
-          {/* <ModalBody>
-            <p>
-              <strong>{manga.title}</strong>
-            </p>
-          </ModalBody> */}
           <ModalFooter>
             <Button
               color="danger"
