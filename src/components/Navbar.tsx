@@ -70,7 +70,43 @@ export default function NavbarComponent() {
           }}
         />
 
-        {!!user && !loading ? (
+        {!!user && user.role === "ADMIN" && !loading ? (
+          <>
+            <Dropdown placement="bottom-end">
+              <DropdownTrigger>
+                <Avatar
+                  isBordered
+                  as="button"
+                  className="transition-transform"
+                  size="md"
+                  src="/static/user-avt.png"
+                />
+              </DropdownTrigger>
+              <DropdownMenu aria-label="Profile Actions" variant="flat">
+                <DropdownItem key="username" className="h-14 gap-2">
+                  <p className="font-semibold">Xin chào, {user.username}!</p>
+                </DropdownItem>
+                <DropdownItem key="profile" href={`/user/${user.id}`}>
+                  Trang cá nhân
+                </DropdownItem>
+                <DropdownItem key="manage" href="/manage/mangas">
+                  Quản lý truyện
+                </DropdownItem>
+                <DropdownItem key="manage" href="/manage/users" showDivider>
+                  Quản lý người dùng
+                </DropdownItem>
+                <DropdownItem
+                  key="logout"
+                  color="danger"
+                  className="text-danger"
+                  onClick={Logout}
+                >
+                  Đăng xuất
+                </DropdownItem>
+              </DropdownMenu>
+            </Dropdown>
+          </>
+        ) : !!user && !loading ? (
           <>
             <Dropdown placement="bottom-end">
               <DropdownTrigger>

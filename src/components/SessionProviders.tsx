@@ -12,7 +12,7 @@ const initState: userState = {
 
 type userState = {
   loading: boolean;
-  user: Pick<User, "id" | "email" | "username"> | null;
+  user: Pick<User, "id" | "email" | "username" | "role"> | null;
   error: any;
 };
 

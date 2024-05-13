@@ -18,7 +18,16 @@ export const metadata: Metadata = {
 const page = async () => {
   const session = await getAuthSession();
   //console.log(session);
+  const roles = ["ADMIN", "UPLOADER"];
   if (!session) return redirect(`${process.env.MAIN_URL}/sign-in`);
+  // if (!roles.includes(session.role))
+  //   return (
+  //     <main className="container max-sm:px-2 mb-10">
+  //       <section className="p-2 rounded-md dark:bg-zinc-900/60">
+  //         <p>Bạn cần có quyền Upload để truy cập trang này!</p>
+  //       </section>
+  //     </main>
+  //   );
 
   const manga = await db.user
     .findUnique({
@@ -48,7 +57,7 @@ const page = async () => {
           <p>
             Bạn chưa có manga nào. Hãy{" "}
             <a
-              href="/manage/upload"
+              href="/manage/mangas/upload"
               className="text-sky-500 underline decoration-sky-500"
             >
               upload

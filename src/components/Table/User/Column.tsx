@@ -3,7 +3,7 @@
 import { buttonVariants } from "@/components/ui/Button";
 import { DataTableColumnHeader } from "../ColumnHeader";
 import { formatTimeToNow } from "@/lib/utils";
-import type { Manga } from "@prisma/client";
+import type { User } from "@prisma/client";
 import type { ColumnDef } from "@tanstack/react-table";
 import { MoreHorizontal } from "lucide-react";
 import dynamic from "next/dynamic";
@@ -18,9 +18,9 @@ const DataTableRowAction = dynamic(() => import("./RowAction"), {
   ),
 });
 
-export type MangaColumn = Pick<Manga, "id" | "title" | "updatedAt">;
+export type UserColumn = Pick<User, "id" | "email" | "username" | "role">;
 
-export const columns: ColumnDef<MangaColumn>[] = [
+export const columns: ColumnDef<UserColumn>[] = [
   {
     id: "ID",
     accessorKey: "id",
@@ -31,22 +31,25 @@ export const columns: ColumnDef<MangaColumn>[] = [
     enableHiding: false,
   },
   {
-    id: "Tên truyện",
-    accessorKey: "title",
+    id: "Email",
+    accessorKey: "email",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Tên truyện" />
+      <DataTableColumnHeader column={column} title="Email" />
     ),
   },
   {
-    id: "Cập nhật",
-    accessorKey: "updatedAt",
+    id: "Username",
+    accessorKey: "username",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Cập nhật" />
+      <DataTableColumnHeader column={column} title="Tên người dùng" />
     ),
-    cell: ({ row }) => {
-      const formattedDate = formatTimeToNow(row.getValue("Cập nhật"));
-      return <div>{formattedDate}</div>;
-    },
+  },
+  {
+    id: "Role",
+    accessorKey: "role",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Role" />
+    ),
   },
   {
     id: "actions",

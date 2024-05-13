@@ -54,7 +54,6 @@ function DataTableRowAction({ row }: DataTableRowActionProps) {
   const { loginToast, notFoundToast, serverErrorToast, successToast } =
     useCustomToast();
   const [isOpen, setOpen] = useState(false);
-  console.log(isOpen);
 
   return (
     <>

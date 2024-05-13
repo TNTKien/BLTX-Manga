@@ -35,7 +35,7 @@ function DataToolbar<TValue>({ column, table }: DataToolbarProps<TValue>) {
 
   return (
     <Link
-      href="/manage/upload"
+      href="/manage/mangas/upload"
       className={cn(
         buttonVariants({
           variant: "default",

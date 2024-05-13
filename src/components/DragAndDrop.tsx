@@ -11,7 +11,7 @@ import {
 } from "@dnd-kit/core";
 import { SortableContext, arrayMove, useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
-import { Edit, Maximize2, X } from "lucide-react";
+import { Edit, Maximize2, X, SquarePen } from "lucide-react";
 import type { Dispatch, FC, RefObject, SetStateAction } from "react";
 import { memo, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Controlled as ControlledZoom } from "react-medium-image-zoom";
@@ -192,7 +192,7 @@ const SortableItem = memo(function SortableItem({
           >
             <Edit
               color="#ffffff"
-              className="w-5 h-5 bg-gray-700/80 bg-white rounded-sm"
+              className="w-5 h-5 bg-gray-700/80 rounded-sm"
             />
           </button>
         )}
@@ -205,10 +205,7 @@ const SortableItem = memo(function SortableItem({
               setItems((items) => items.filter((item) => item.src !== img.src));
             }}
           >
-            <X
-              color="#ffffff"
-              className="w-5 h-5 bg-gray-700/80 bg-white rounded-sm"
-            />
+            <X color="#ffffff" className="w-5 h-5 bg-gray-700/80 rounded-sm" />
           </button>
         )}
 

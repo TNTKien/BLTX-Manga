@@ -11,7 +11,7 @@ export async function getAuthSession() {
     });
     //console.log(status);
     if (status === 200) {
-      return data.data as Pick<User, "id" | "email" | "username">;
+      return data.data as Pick<User, "id" | "email" | "username" | "role">;
     } else {
       return null;
     }
