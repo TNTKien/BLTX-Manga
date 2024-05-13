@@ -2,7 +2,7 @@ import classes from "@/styles/mantine/dropzone.module.css";
 import { Dropzone } from "@mantine/dropzone";
 import "@mantine/dropzone/styles.layer.css";
 import { ArrowUpFromLine, CircleOff, Loader } from "lucide-react";
-// import { UnrarError, createExtractorFromData } from "node-unrar-js";
+import { toast } from "@/hooks/use-toast";
 import {
   Dispatch,
   SetStateAction,
@@ -16,19 +16,9 @@ export enum AddImageTypeEnum {
   COMPRESSED = "COMPRESSED",
 }
 
-export enum ErrorEnum {
-  PASSWORD_REQUIRED = "PASSWORD_REQUIRED",
-  WRONG_PASSWORD = "WRONG_PASSWORD",
-}
-
 export type ImageType = {
   src: string;
   name: string;
-};
-
-export type RequiredPasswordType = {
-  state: boolean;
-  isWrongPass: boolean;
 };
 
 interface ChapterImageInputProps {
@@ -40,9 +30,6 @@ interface ChapterImageInputProps {
 const ChapterImageInput = forwardRef<HTMLInputElement, ChapterImageInputProps>(
   ({ type, setType, setImages }, ref) => {
     const [files, setFiles] = useState<Omit<FileList, "item">>();
-    const [password, setPassword] = useState("");
-    const [isPasswordRequire, setIsPasswordRequire] =
-      useState<RequiredPasswordType>({ state: false, isWrongPass: false });
 
     const onFileCommit = useCallback(
       (files: Omit<FileList, "item">) => {
@@ -52,7 +39,15 @@ const ChapterImageInput = forwardRef<HTMLInputElement, ChapterImageInputProps>(
           let arr: ImageType[] = [];
           for (let i = 0; i < files.length; ++i) {
             const file = files[i];
-            if (file.size > 4 * 1000 * 1000) continue;
+
+            if (file.size > 4 * 1000 * 1000) {
+              toast({
+                title: "Có ảnh load không thành công",
+                description: "Dung lượng tối đa cho mỗi ảnh là 4MB",
+                variant: "destructive",
+              });
+              continue;
+            }
 
             arr.push({
               name: file.name,
@@ -61,9 +56,10 @@ const ChapterImageInput = forwardRef<HTMLInputElement, ChapterImageInputProps>(
           }
 
           setImages((prev) => [...prev, ...arr]);
+          console.log(arr);
         }
       },
-      [password, setImages, type]
+      [setImages, type]
     );
 
     const onImageChange = useCallback(
@@ -84,11 +80,7 @@ const ChapterImageInput = forwardRef<HTMLInputElement, ChapterImageInputProps>(
           ref={ref}
           type="file"
           multiple={type === "IMAGE"}
-          accept={
-            type === "IMAGE"
-              ? "image/jpg,image/png,image/jpeg"
-              : "application/zip,.rar"
-          }
+          accept={"image/jpg,image/png,image/jpeg"}
           className="hidden"
           onChange={onImageChange}
         />
@@ -108,7 +100,15 @@ const ChapterImageInput = forwardRef<HTMLInputElement, ChapterImageInputProps>(
             let arr: ImageType[] = [];
             for (let i = 0; i < files.length; ++i) {
               const file = files[i];
-              if (file.size > 4 * 1000 * 1000) continue;
+
+              if (file.size > 4 * 1000 * 1000) {
+                toast({
+                  title: "Có ảnh load không thành công",
+                  description: "Dung lượng tối đa cho mỗi ảnh là 4MB",
+                  variant: "destructive",
+                });
+                continue;
+              }
 
               arr.push({
                 name: file.name,
