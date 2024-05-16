@@ -56,7 +56,7 @@ const ChapterImageInput = forwardRef<HTMLInputElement, ChapterImageInputProps>(
           }
 
           setImages((prev) => [...prev, ...arr]);
-          console.log(arr);
+          //console.log(arr);
         }
       },
       [setImages, type]

@@ -44,7 +44,7 @@ const EditChapter: FC<EditChapterProps> = ({ chapter }) => {
       title: chapter.title,
       pages: chapter.pages.map((page) => ({
         src: `${baseURL}/${page}`,
-        name: (Number(/(\d+)(?!.*\d)/g.exec(page)![0]) + 1).toString(),
+        name: page.split("/")[page.split("/").length - 1],
       })),
     },
   });
@@ -57,7 +57,9 @@ const EditChapter: FC<EditChapterProps> = ({ chapter }) => {
 
       for (let i = 0; i < pages.length; i++) {
         const blob = await fetch(pages[i].src).then((res) => res.blob());
-        form.append("pages", blob, i.toString());
+        const imageType = blob.type.split("/")[1];
+        const fileName = `${i}.${imageType}`;
+        form.append("pages", blob, fileName);
       }
 
       !!title && form.append("title", title);
@@ -119,7 +121,7 @@ const EditChapter: FC<EditChapterProps> = ({ chapter }) => {
             form={form}
             initialImages={chapter.pages.map((page) => ({
               src: `${baseURL}${page}`,
-              name: (Number(/(\d+)(?!.*\d)/g.exec(page)![0]) + 1).toString(),
+              name: page.split("/")[page.split("/").length - 1],
             }))}
             isUploading={isChapterUpdate}
           />

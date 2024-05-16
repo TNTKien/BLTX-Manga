@@ -8,14 +8,13 @@ export const ChapterUploadValidator = z.object({
     .max(256, { message: "Tối đa 256 kí tự" }),
   pages: z
     .object({
-      src: z
-        .string()
-        .refine(
-          (value) =>
-            value.startsWith("blob") ||
-            value.startsWith(process.env.NEXT_PUBLIC_IMG_DOMAIN!),
-          "Ảnh không hợp lệ"
-        ),
+      src: z.string(),
+      // .refine(
+      //   (value) =>
+      //     value.startsWith("blob") ||
+      //     value.startsWith(process.env.NEXT_PUBLIC_IMG_DOMAIN!),
+      //   "Ảnh không hợp lệ"
+      // ),
       name: z.string(),
     })
     .array()

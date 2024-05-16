@@ -1,24 +1,24 @@
 import MangaImage from "../Manga/components/MangaImage";
 import { db } from "@/lib/db";
-import { ThumbsUp } from "lucide-react";
+import { BookmarkCheck } from "lucide-react";
 import Link from "next/link";
 
 const Likes = async () => {
   const results = await db.manga.findMany({
     take: 9,
     where: {
-      totalViews: {
+      totalFollowers: {
         not: 0,
       },
     },
     orderBy: {
-      totalViews: "desc",
+      totalFollowers: "desc",
     },
     select: {
       id: true,
       title: true,
       cover: true,
-      totalViews: true,
+      totalFollowers: true,
     },
   });
 
@@ -42,7 +42,7 @@ const Likes = async () => {
               {manga.title}
             </p>
             <p className="flex items-center gap-1.5">
-              {manga.totalViews} <ThumbsUp className="w-5 h-5" />
+              {manga.totalFollowers} <BookmarkCheck className="w-5 h-5" />
             </p>
           </div>
         </Link>

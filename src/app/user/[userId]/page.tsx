@@ -72,6 +72,7 @@ const page: FC<pageProps> = async ({ params }) => {
             createdAt: "desc",
           },
         },
+        followingManga: true,
       },
     });
 
@@ -100,10 +101,21 @@ const page: FC<pageProps> = async ({ params }) => {
 
           <Accordion type="multiple" defaultValue={["chapter"]}>
             <AccordionItem value="chapter">
-              <AccordionTrigger>Truyện đã đăng</AccordionTrigger>
+              <AccordionTrigger>{`Truyện đã đăng: ${user.manga.length}`}</AccordionTrigger>
               <AccordionContent asChild>
                 <ul className="grid grid-cols-1 md:grid-cols-3 gap-3">
                   {user.manga.map((m) => (
+                    <MangaCard key={m.id} manga={m} />
+                  ))}
+                </ul>
+              </AccordionContent>
+            </AccordionItem>
+
+            <AccordionItem value="following">
+              <AccordionTrigger>{`Truyện theo dõi: ${user.followingManga.length}`}</AccordionTrigger>
+              <AccordionContent asChild>
+                <ul className="grid grid-cols-1 md:grid-cols-3 gap-3">
+                  {user.followingManga.map((m) => (
                     <MangaCard key={m.id} manga={m} />
                   ))}
                 </ul>

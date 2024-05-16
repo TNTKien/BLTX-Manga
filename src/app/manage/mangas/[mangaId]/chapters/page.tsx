@@ -63,7 +63,7 @@ const page: FC<pageProps> = async ({ params }) => {
         {!chapters.length && (
           <div className="h-96 flex flex-col space-y-2 justify-center items-center">
             <p className="text-center">
-              Bạn chưa có Chapter nào. Hãy upload Chapter ngay thôi nhé
+              Truyện chưa có Chapter nào. Hãy upload Chapter ngay thôi nhé!
             </p>
             <Link
               href={`/manage/mangas/${params.mangaId}/chapters/upload`}

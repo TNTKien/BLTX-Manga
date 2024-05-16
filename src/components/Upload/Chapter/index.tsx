@@ -48,7 +48,9 @@ const ChapterUpload = ({ id }: { id: string }) => {
 
       for (let i = 0; i < pages.length; i++) {
         const blob = await fetch(pages[i].src).then((res) => res.blob());
-        form.append("pages", blob, i.toString());
+        const imageType = blob.type.split("/")[1];
+        const fileName = `${i}.${imageType}`;
+        form.append("pages", blob, fileName);
       }
 
       !!title && form.append("title", title);
