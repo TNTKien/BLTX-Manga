@@ -4,7 +4,10 @@ import Link from "next/link";
 import { formatTimeToNow } from "@/lib/utils";
 
 type MangaCardProps = {
-  manga: Pick<Manga, "title" | "description" | "cover" | "createdAt" | "id">;
+  manga: Pick<
+    Manga,
+    "title" | "description" | "cover" | "createdAt" | "id" | "updatedAt"
+  >;
 };
 
 const MangaCard: React.FC<MangaCardProps> = ({ manga }) => {

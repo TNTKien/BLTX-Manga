@@ -73,6 +73,7 @@ const page: FC<pageProps> = async ({ params }) => {
           },
         },
         followingManga: true,
+        role: true,
       },
     });
 
@@ -92,7 +93,7 @@ const page: FC<pageProps> = async ({ params }) => {
           />
         </div>
 
-        <div className="mt-16 lg:mt-20 p-4 rounded-md dark:bg-zinc-800">
+        <div className="mt-10 lg:mt-20 p-4 rounded-md dark:bg-zinc-800">
           <Username user={user} className="text-start text-lg font-semibold" />
 
           <hr className="h-0.5 rounded-full dark:bg-zinc-50 my-4" />

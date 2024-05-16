@@ -60,6 +60,7 @@ const page: FC<pageProps> = async ({ params }) => {
       cover: true,
       description: true,
       createdAt: true,
+      updatedAt: true,
     },
   });
 
@@ -98,7 +99,7 @@ const page: FC<pageProps> = async ({ params }) => {
           <div className="grid grid-rows-[1fr_.7fr] md:grid-rows-[1fr_.8fr_auto]">
             {/* <div className="max-sm:hidden" /> */}
             <div className="relative">
-              <h1 className="text-white text-2xl md:text-4xl lg:text-5xl max-sm:max-h-16 max-sm:active:max-h-none max-sm:leading-6 overflow-hidden font-bold drop-shadow-xl">
+              <h1 className="text-white text-2xl md:text-4xl lg:text-5xl max-sm:max-h-16 max-sm:active:max-h-none max-sm:leading-6 font-bold drop-shadow-xl">
                 {manga.title}
               </h1>
               <h1 className="absolute bottom-5 left-0.5 text-white font-normal text-md sm:text-base sm:truncate flex-shrink-0">
