@@ -4,8 +4,11 @@ import { MoveRight } from "lucide-react";
 import Link from "next/link";
 import dynamic from "next/dynamic";
 import { Metadata } from "next";
+import RandomMangaSkeleton from "@/components/Skeleton/RandomMangaSkeleton";
 
-const RandomManga = dynamic(() => import("@/components/Manga/RandomManga"), {});
+const RandomManga = dynamic(() => import("@/components/Manga/RandomManga"), {
+  loading: () => <RandomMangaSkeleton />,
+});
 
 const LatestManga = dynamic(() => import("@/components/Manga/LatestManga"), {
   loading: () => <MangaCardSkeleton />,
@@ -19,7 +22,7 @@ export const metadata: Metadata = {
   title: "MangaDex",
   description:
     "Web đọc truyện tranh online tiện ích nhất được cập nhật liên tục mỗi ngày",
-  keywords: ["Manga", "Truyện tranh", "Bac Le Than Xa", "BLTX"],
+  keywords: ["Manga", "Truyện tranh"],
 };
 
 export default async function Home() {
