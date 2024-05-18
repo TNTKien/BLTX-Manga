@@ -54,12 +54,3 @@ export const countFTResult = async (
   });
   return [{ count: total }];
 };
-
-export type Tags = {
-  category: string;
-  data: {
-    id: number;
-    name: string;
-    description: string;
-  }[];
-};

@@ -25,7 +25,7 @@ const PaginationControll: FC<PaginationControllProps> = ({ total, route }) => {
   });
 
   return (
-    <section className="flex flex-wrap justify-center items-center gap-4">
+    <section className="flex flex-wrap justify-center items-center gap-4 pb-3">
       <Button
         size={"sm"}
         aria-label="previous page"

@@ -123,9 +123,11 @@ const page: FC<pageProps> = async ({ params }) => {
               <TagWrapper className="px-2">
                 {manga.tags.map((tag, i) => (
                   <li key={i}>
-                    <div className="block p-0.5 rounded-md font-medium text-[.75rem] bg-red-300 text-primary-foreground">
-                      {tag.replace(/_/g, " ")}
-                    </div>
+                    <Link href={`/search/tags?q=${tag.replace(/_/g, " ")}`}>
+                      <div className="block p-0.5 rounded-md font-medium text-[.75rem] bg-red-300 text-primary-foreground">
+                        {tag.replace(/_/g, " ")}
+                      </div>
+                    </Link>
                   </li>
                 ))}
               </TagWrapper>
@@ -138,10 +140,10 @@ const page: FC<pageProps> = async ({ params }) => {
               <span className="font-semibold">Lượt xem: </span>
               {manga.totalViews}
             </p>
-            {/* <p>
-              <span className="font-semibold">Lượt thích: </span>
-              {manga.totalViews}
-            </p> */}
+            <p>
+              <span className="font-semibold">Lượt theo dõi: </span>
+              {manga.totalFollowers}
+            </p>
           </div>
         </section>
 

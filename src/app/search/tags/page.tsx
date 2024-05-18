@@ -1,9 +1,12 @@
 import MangaImage from "@/components/Manga/components/MangaImage";
-import { searchManga, countFTResult } from "@/lib/query";
+import { db } from "@/lib/db";
 import dynamic from "next/dynamic";
 import Link from "next/link";
 import { FC } from "react";
-import { Code } from "@nextui-org/react";
+import { Tags } from "@prisma/client";
+import axiosInstance from "@/lib/axios";
+import { notFound } from "next/navigation";
+import { Chip } from "@nextui-org/react";
 import { Metadata } from "next";
 
 const PaginationControll = dynamic(
@@ -13,43 +16,44 @@ const PaginationControll = dynamic(
 
 interface pageProps {
   searchParams: {
-    [key: string]: string | string[] | undefined;
+    [key: string]: string | undefined;
   };
 }
 
 export const metadata: Metadata = {
-  title: "Tìm kiếm",
+  title: "Lọc thể loại",
 };
 
 const page: FC<pageProps> = async ({ searchParams }) => {
   const page = searchParams["page"] ?? "1";
   const limit = searchParams["limit"] ?? "10";
   const queryParam = searchParams["q"];
-  if (!queryParam)
-    return (
-      <main className="container max-sm:px-2 mb-10">
-        <p>Đường dẫn không hợp lệ</p>
-      </main>
-    );
+  if (!queryParam) return notFound();
 
   let query = typeof queryParam === "string" ? queryParam : queryParam[0];
 
+  const allTags = await getTags();
+  if (!allTags.includes(query.toUpperCase())) return notFound();
+
+  const tagQuery = query.trim().toUpperCase().replace(/ /g, "_") as Tags;
+
   const [mangas, total] = await Promise.all([
-    searchManga({
-      searchPhrase: query,
-      take: Number(limit),
-      skip: (Number(page) - 1) * Number(limit),
-    }),
-    countFTResult(query, "Manga"),
+    getMangasByTag(tagQuery, Number(limit), (Number(page) - 1) * Number(limit)),
+    getMangasByTagCount(tagQuery),
   ]);
 
   return (
     <main className="container max-sm:px-2 mt-10 space-y-4">
       <h1 className="text-xl font-bold">
-        Từ khóa:{" "}
-        <Code color="primary" size="sm">
-          {query}
-        </Code>
+        Thể loại:{" "}
+        <Chip
+          classNames={{
+            base: "bg-red-300 ",
+            content: "text-white font-semibold",
+          }}
+        >
+          {query.toUpperCase()}
+        </Chip>
       </h1>
 
       {!!mangas.length ? (
@@ -81,10 +85,42 @@ const page: FC<pageProps> = async ({ searchParams }) => {
 
       <PaginationControll
         total={total[0].count}
-        route={`/search/manga?q=${queryParam}`}
+        route={`/search/tags?q=${queryParam}`}
       />
     </main>
   );
 };
 
 export default page;
+
+async function getTags() {
+  const { data } = await axiosInstance.get("/api/tags");
+  return data.data;
+}
+
+async function getMangasByTag(tag: Tags, limit: number, skip: number) {
+  const mangas = await db.manga.findMany({
+    where: {
+      tags: {
+        has: tag,
+      },
+    },
+    take: limit,
+    skip: skip,
+  });
+
+  //console.log(total);
+  return mangas;
+}
+
+async function getMangasByTagCount(tag: Tags): Promise<{ count: number }[]> {
+  const total = await db.manga.count({
+    where: {
+      tags: {
+        has: tag,
+      },
+    },
+  });
+
+  return [{ count: total }];
+}

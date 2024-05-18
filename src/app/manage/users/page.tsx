@@ -3,9 +3,7 @@ import { db } from "@/lib/db";
 import { notFound, redirect } from "next/navigation";
 import dynamic from "next/dynamic";
 import TableSkeleton from "@/components/Skeleton/TableSkeleton";
-import Link from "next/link";
 import { Metadata } from "next";
-import { user } from "@nextui-org/react";
 
 const UserTable = dynamic(() => import("@/components/Table/User"), {
   ssr: false,
