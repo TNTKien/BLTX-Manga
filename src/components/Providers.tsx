@@ -18,7 +18,12 @@ export function Providers({ children }: { children: React.ReactNode }) {
         <NextUIProvider navigate={router.push}>
           <MantineProvider>
             {children}
-            <ProgressBar height="4px" color="#1ee9f7" shallowRouting />
+            <ProgressBar
+              height="4px"
+              color="#1ee9f7"
+              shallowRouting
+              options={{ showSpinner: false }}
+            />
           </MantineProvider>
         </NextUIProvider>
       </SessionProviders>

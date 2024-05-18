@@ -14,24 +14,25 @@ import {
   Image,
   AvatarIcon,
 } from "@nextui-org/react";
-import { Search, BookMarked } from "lucide-react";
 import { usePathname } from "next/navigation";
 import { useSession } from "./SessionProviders";
 import axiosInstance from "@/lib/axios";
-import { useRouter } from "next/navigation";
+import type { Manga } from "@prisma/client";
+import React, { useState } from "react";
+import SearchBar from "./SearchBar";
+
+type MangaSearchResult = Pick<Manga, "id" | "title" | "cover">;
 
 export default function NavbarComponent() {
   const pathName = usePathname();
-  //console.log(/^(\/chapter\/)*/.test(pathName), pathName);
   if (/^(\/chapter\/)/g.test(pathName)) return null;
-
   const { user, error, loading } = useSession();
-  const router = useRouter();
 
   return (
     <Navbar
       position="static"
       // isBlurred={false}
+      shouldHideOnScroll
       className="justify-between rounded-b-md bg-transparent"
       classNames={{
         wrapper: "max-w-full",
@@ -49,28 +50,7 @@ export default function NavbarComponent() {
       </NavbarContent>
 
       <NavbarContent as="div" className="items-center" justify="end">
-        <Input
-          classNames={{
-            base: "max-w-full sm:max-w-[15rem] h-10 w-full",
-            mainWrapper: "h-full",
-            input: "text-small",
-            inputWrapper:
-              "h-full font-normal text-default-500 bg-default-400/20 dark:bg-default-500/20",
-          }}
-          placeholder="Nhập từ khoá..."
-          size="sm"
-          startContent={<Search size={18} />}
-          type="search"
-          onKeyDown={(e) => {
-            if (e.key === "Enter") {
-              const search = e.currentTarget.value;
-              if (search) {
-                router.push(`/search/manga?q=${search}`);
-              }
-            }
-          }}
-        />
-
+        <SearchBar />
         {!!user && user.role === "ADMIN" && !loading ? (
           <>
             <Dropdown placement="bottom-end">
@@ -171,4 +151,9 @@ export default function NavbarComponent() {
 async function Logout() {
   await axiosInstance.delete("/api/auth/logout");
   window.location.reload();
+}
+
+async function searchManga(keyword: string) {
+  const { data } = await axiosInstance.get(`/api/search/manga?q=${keyword}`);
+  return data.data as MangaSearchResult[];
 }
