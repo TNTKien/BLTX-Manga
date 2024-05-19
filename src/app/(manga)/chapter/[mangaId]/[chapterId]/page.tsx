@@ -46,6 +46,9 @@ async function getManga(mangaId: string) {
 }
 
 const page: FC<pageProps> = async ({ params }) => {
+  const manga = await getManga(params.mangaId);
+  if (!manga) return notFound();
+
   const chapter = await getChapter(params.mangaId, params.chapterId);
   if (!chapter) return notFound();
 
@@ -73,6 +76,7 @@ const page: FC<pageProps> = async ({ params }) => {
         prevChapter={!!navChapter?.prev ? navChapter.prev : null}
         nextChapter={!!navChapter?.next ? navChapter.next : null}
         chapter={chapterArgs}
+        mangaTitle={manga.title}
       />
     </main>
   );

@@ -99,14 +99,14 @@ const page: FC<pageProps> = async ({ params }) => {
           <div className="grid grid-rows-[1fr_.7fr] md:grid-rows-[1fr_.8fr_auto]">
             {/* <div className="max-sm:hidden" /> */}
             <div className="relative">
-              <h1 className="text-white text-2xl md:text-4xl lg:text-5xl max-sm:max-h-16 max-sm:active:max-h-none max-sm:leading-6 font-bold drop-shadow-xl">
+              <h1 className="text-white text-xl md:text-4xl lg:text-5xl max-sm:max-h-16 max-sm:active:max-h-none max-sm:leading-6 font-bold drop-shadow-xl">
                 {manga.title}
               </h1>
-              <h1 className="absolute bottom-5 left-0.5 text-white font-normal text-md sm:text-base sm:truncate flex-shrink-0">
+              {/* <h1 className="self-end mb-5 text-white font-normal text-md sm:text-base sm:truncate flex-shrink-0">
                 {manga.author.length >= 2
                   ? manga.author.join(", ")
                   : manga.author}
-              </h1>
+              </h1> */}
             </div>
 
             <div className="flex flex-wrap items-start gap-2">
@@ -123,7 +123,7 @@ const page: FC<pageProps> = async ({ params }) => {
               <TagWrapper className="px-2">
                 {manga.tags.map((tag, i) => (
                   <li key={i}>
-                    <Link href={`/search/tags?q=${tag.replace(/_/g, " ")}`}>
+                    <Link href={`/search/tags?q=${tag}`}>
                       <div className="block p-0.5 rounded-md font-medium text-[.75rem] bg-red-300 text-primary-foreground">
                         {tag.replace(/_/g, " ")}
                       </div>
@@ -132,6 +132,12 @@ const page: FC<pageProps> = async ({ params }) => {
                 ))}
               </TagWrapper>
             </div>
+            <p>
+              <span className="font-semibold">Tác giả: </span>
+              {manga.author.length >= 2
+                ? manga.author.join(", ")
+                : manga.author}
+            </p>
             <p>
               <span className="font-semibold">Mô tả: </span>
               {manga.description}

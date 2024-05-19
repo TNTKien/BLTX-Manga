@@ -22,13 +22,19 @@ interface ReaderProps {
   chapter: Pick<Chapter, "id" | "title" | "pages" | "mangaId"> & {
     chapters: Pick<Chapter, "id" | "title" | "pages" | "mangaId">[];
   };
+  mangaTitle: string;
 }
 
 useEmblaCarousel.globalOptions = {
   align: "start",
 };
 
-const Reader: FC<ReaderProps> = ({ prevChapter, nextChapter, chapter }) => {
+const Reader: FC<ReaderProps> = ({
+  prevChapter,
+  nextChapter,
+  chapter,
+  mangaTitle,
+}) => {
   const menuConfig = useState(false);
   const commentConfig = useState(false);
   const infoConfig = useState(false);
@@ -226,7 +232,7 @@ const Reader: FC<ReaderProps> = ({ prevChapter, nextChapter, chapter }) => {
         />
         <Menu
           chapterId={chapter.id}
-          title={`${!!chapter.title ? `${chapter.title}` : ""}`}
+          title={`${!!mangaTitle ? `${mangaTitle}` : ""}`}
           prevChapterUrl={
             !!prevChapter
               ? `/chapter/${chapter.mangaId}/${prevChapter.id}`

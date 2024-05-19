@@ -16,7 +16,7 @@ const PaginationControll = dynamic(
 
 interface pageProps {
   searchParams: {
-    [key: string]: string | undefined;
+    [key: string]: string | string[] | undefined;
   };
 }
 
@@ -30,12 +30,11 @@ const page: FC<pageProps> = async ({ searchParams }) => {
   const queryParam = searchParams["q"];
   if (!queryParam) return notFound();
 
-  let query = typeof queryParam === "string" ? queryParam : queryParam[0];
+  const tagQuery = getTagQuery(queryParam);
 
   const allTags = await getTags();
-  if (!allTags.includes(query.toUpperCase())) return notFound();
-
-  const tagQuery = query.trim().toUpperCase().replace(/ /g, "_") as Tags;
+  if (!tagQuery.every((tag) => allTags.includes(tag.replace(/_/g, " "))))
+    return notFound();
 
   const [mangas, total] = await Promise.all([
     getMangasByTag(tagQuery, Number(limit), (Number(page) - 1) * Number(limit)),
@@ -44,17 +43,20 @@ const page: FC<pageProps> = async ({ searchParams }) => {
 
   return (
     <main className="container max-sm:px-2 mt-10 space-y-4">
-      <h1 className="text-xl font-bold">
-        Thể loại:{" "}
-        <Chip
-          classNames={{
-            base: "bg-red-300 ",
-            content: "text-white font-semibold",
-          }}
-        >
-          {query.toUpperCase()}
-        </Chip>
-      </h1>
+      <div className="flex gap-1 flex-wrap">
+        <h1 className="text-xl font-bold">Thể loại: </h1>
+        {tagQuery.map((tag, index) => (
+          <Chip
+            key={index}
+            classNames={{
+              base: "bg-red-300 ",
+              content: "text-white font-semibold",
+            }}
+          >
+            {tag.replace(/_/g, " ").toUpperCase()}
+          </Chip>
+        ))}
+      </div>
 
       {!!mangas.length ? (
         <ul className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 p-2 rounded-md bg-gradient-to-b from-background/40">
@@ -70,7 +72,7 @@ const page: FC<pageProps> = async ({ searchParams }) => {
                   className="group-hover:scale-105 transition-transform"
                 />
                 <div className="space-y-0.5 min-w-0 pl-4 px-2">
-                  <p className="text-2xl lg:text-3xl line-clamp-2 font-semibold">
+                  <p className="text-2xl line-clamp-2 font-semibold text-ellipsis">
                     {manga.title}
                   </p>
                   <p className="line-clamp-3">{manga.description}</p>
@@ -98,11 +100,11 @@ async function getTags() {
   return data.data;
 }
 
-async function getMangasByTag(tag: Tags, limit: number, skip: number) {
+async function getMangasByTag(tag: Tags[], limit: number, skip: number) {
   const mangas = await db.manga.findMany({
     where: {
       tags: {
-        has: tag,
+        hasEvery: tag,
       },
     },
     take: limit,
@@ -113,14 +115,25 @@ async function getMangasByTag(tag: Tags, limit: number, skip: number) {
   return mangas;
 }
 
-async function getMangasByTagCount(tag: Tags): Promise<{ count: number }[]> {
+async function getMangasByTagCount(tag: Tags[]): Promise<{ count: number }[]> {
   const total = await db.manga.count({
     where: {
       tags: {
-        has: tag,
+        hasEvery: tag,
       },
     },
   });
 
   return [{ count: total }];
+}
+
+function getTagQuery(query: string | string[]) {
+  let tags = [];
+  if (typeof query === "string")
+    tags.push(query.trim().toUpperCase().replace(/ /g, "_") as Tags);
+  else
+    tags = query.map(
+      (tag) => tag.trim().toUpperCase().replace(/ /g, "_") as Tags
+    );
+  return tags as Tags[];
 }

@@ -1,12 +1,14 @@
 import React, { useState } from "react";
 import { baseURL } from "@/utils/config";
-import { Search } from "lucide-react";
-import type { Manga } from "@prisma/client";
+import { ExternalLink, Search } from "lucide-react";
+import { Tags, type Manga } from "@prisma/client";
 import axiosInstance from "@/lib/axios";
 import { Input } from "@nextui-org/react";
 import MangaImage from "./Manga/components/MangaImage";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { Button } from "@nextui-org/react";
+import { TagsModal } from "./TagsModal";
 type MangaSearchResult = Pick<Manga, "id" | "title" | "cover">;
 
 const SearchBar = () => {
@@ -29,6 +31,7 @@ const SearchBar = () => {
       setIsFocused(false);
     }, 100);
   };
+
   return (
     <div className="relative">
       <Input
@@ -45,6 +48,7 @@ const SearchBar = () => {
         placeholder="Nhập từ khoá..."
         size="sm"
         startContent={<Search size={18} />}
+        endContent={<TagsModal />}
         type="search"
         onChange={handleSearch}
         onFocus={handleFocus}
@@ -61,6 +65,12 @@ const SearchBar = () => {
       />
       {isFocused && activeSearch.length > 0 && (
         <div className="absolute top-12 -right-1 md:right-0 bg-white border border-gray-300 rounded-lg w-[350px] md:w-[500px] max-h-96 overflow-x-auto px-3 py-1">
+          {/* <Link
+            href={"/manga/6646780c5ba8c6b1c01aa1fe"}
+            className="text-blue-600 underline"
+          >
+            Tìm kiếm nâng cao
+          </Link> */}
           {activeSearch.map((manga) => (
             <Link
               key={manga.id}

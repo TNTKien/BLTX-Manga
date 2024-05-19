@@ -66,7 +66,7 @@ const page: FC<pageProps> = async ({ searchParams }) => {
                   className="group-hover:scale-105 transition-transform"
                 />
                 <div className="space-y-0.5 min-w-0 pl-4 px-2">
-                  <p className="text-2xl lg:text-3xl line-clamp-2 font-semibold">
+                  <p className="text-2xl line-clamp-2 font-semibold text-ellipsis">
                     {manga.title}
                   </p>
                   <p className="line-clamp-3">{manga.description}</p>

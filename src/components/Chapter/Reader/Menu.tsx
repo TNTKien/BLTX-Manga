@@ -18,14 +18,19 @@ import type { LayoutType } from "@/hooks/use-layout-reader";
 import { cn } from "@/lib/utils";
 import type { Chapter } from "@prisma/client";
 import {
+  AlignHorizontalJustifyCenter,
+  AlignJustify,
   Check,
   ChevronLeft,
   ChevronRight,
   Columns,
   Expand,
+  ExternalLink,
   File,
   Rows,
   Shrink,
+  SquareChevronLeft,
+  X,
 } from "lucide-react";
 import Link from "next/link";
 import type { FC } from "react";
@@ -115,17 +120,28 @@ const Menu: FC<MenuProps> = ({
         "p-4 bg-primary-foreground overflow-y-auto"
       )}
     >
-      <div className="relative flex justify-center">
+      <div className="relative flex items-center justify-between">
         <button
           tabIndex={-1}
           type="button"
           aria-label="close menu button"
-          className="absolute top-1/2 -translate-y-1/2 left-0 p-1 rounded-md transition-colors hover:bg-muted"
+          className="rounded-md transition-colors hover:bg-muted"
           onClick={() => setMenuToggle((prev) => !prev)}
         >
-          <ChevronLeft className="w-7 h-7" />
+          <X className="w-7 h-7" />
         </button>
-        <p className="text-3xl font-semibold">Menu</p>
+
+        <p className="text-xl font-semibold text-center">{title}</p>
+
+        <button
+          tabIndex={-1}
+          type="button"
+          aria-label="close menu button"
+          className="rounded-md transition-colors hover:bg-muted"
+          onClick={() => setMenuToggle((prev) => !prev)}
+        >
+          <ExternalLink />
+        </button>
       </div>
 
       <div className="mt-8 space-y-1.5">
